@@ -1,0 +1,11 @@
+.btn-xxs {
+  padding: 1px 1px;
+  font-size: 1.0rem;
+}
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+  display: block;
+  width: 100%;
+}
