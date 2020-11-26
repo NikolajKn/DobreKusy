@@ -1,0 +1,15 @@
+﻿.btn-primary {
+    background-color: #343a40 !important;
+    border-color: #343a40 !important;
+}
+
+.btn-primary:hover {
+    background-color: red !important;
+}
+
+.btn-primary:focus {
+    background-color: red !important;
+}
+.Nav {
+    background-color: #343a40 !important;
+}
