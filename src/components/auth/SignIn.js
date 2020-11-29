@@ -5,6 +5,8 @@ import {BrowserRouter, Switch, Route} from "react-router-dom"
 import Home from "../home/Home"
 import logo from './logo.png';
 
+var init = false;
+
 class SignIn extends Component {
   state = {
     email: '',
@@ -18,6 +20,7 @@ class SignIn extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.signIn(this.state)
+    init = true;
   }
   render() {
     const { authError } = this.props;
@@ -43,7 +46,8 @@ class SignIn extends Component {
           <div className="input-field">
             <button className="btn blue lighten-1 z-depth-0">Login</button>
             <div className="center red-text">
-              { authError ? <p>{authError}</p> :null } 
+    
+             { authError ? <p>{authError}</p>: init ? window.location.href ="Home":null} 
                   
             </div>
           </div>
@@ -58,7 +62,8 @@ const mapStateToProps = (state) => {
     authError: state.auth.authError
   }
 }
-//window.location.href ="Home"
+    //window.location.href ="Home"
+  
 
 const mapDispatchToProps = (dispatch) => {
   return {
