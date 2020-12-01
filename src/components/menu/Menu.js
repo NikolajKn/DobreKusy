@@ -5,6 +5,7 @@ import AllMenuMinimal from "./AllMenuMinimal"
 import MenuDetail from "./MenuDetail"
 import { connect } from "react-redux"
 import {compose} from "redux";
+import './Menu.css';
 import { firestoreConnect } from "react-redux-firebase";
 
 class Menu extends Component{
