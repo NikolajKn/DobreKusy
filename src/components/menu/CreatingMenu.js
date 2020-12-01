@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import { Card, Nav, Button } from "react-bootstrap"
 import OneDayMenuCard from './OneDayMenuCard';
 import Menu from "./Menu.js"
+import { connect } from "react-redux"
+import {fetchAllMenu} from "../../store/actions/menuActions"
+import {compose} from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 
 class CreatingMenu extends Component {
 
@@ -9,18 +13,7 @@ class CreatingMenu extends Component {
         super(props);
         var dayGlobal = 0;
         this.state = { index: 0, save: false };
-        this.newMenu = {
-            author: "",
-            creatingDate: "",
-            date: "",
-            state: "2",
-            monday: [{"recipe":"hhhh", "portions":"4"}],
-            tuesday: [],
-            wednesday: [],
-            thursday: [],
-            friday: []
-        }
-        localStorage.setItem("newMenu", this.newMenu)
+        console.log(this.props.menu1)
     }
 
     setCreatingDate(){
@@ -94,11 +87,11 @@ class CreatingMenu extends Component {
                             <Card.Title className="creatingCardText">Selected recipes:</Card.Title>
 
                             {
-                                this.state.index == 0 ? <OneDayMenuCard index={0} recipes={this.newMenu["monday"]} day={"monday"} setRecipes={this.setRecipesDay} />
-                                    : this.state.index == 1 ? <OneDayMenuCard index={1} recipes={this.newMenu["tuesday"]} day={"tuesday"} setRecipes={this.setRecipesDay}/>
-                                        : this.state.index == 2 ? <OneDayMenuCard index={2} recipes={this.newMenu["wednesday"]} day={"wednesday"} setRecipes={this.setRecipesDay}/>
-                                            : this.state.index == 3 ? <OneDayMenuCard index={3} recipes={this.newMenu["thursday"]} day={"thursday"} setRecipes={this.setRecipesDay}/>
-                                                : <OneDayMenuCard index={4} recipes={this.newMenu["friday"]} day={"friday"} setRecipes={this.setRecipesDay}/>
+                                this.state.index == 0 ? <OneDayMenuCard index={0} recipes={this.props.menu1.newMenu["monday"]} day={"monday"} setRecipes={this.setRecipesDay} />
+                                    : this.state.index == 1 ? <OneDayMenuCard index={1} recipes={this.props.menu1.newMenu["tuesday"]} day={"tuesday"} setRecipes={this.setRecipesDay}/>
+                                        : this.state.index == 2 ? <OneDayMenuCard index={2} recipes={this.props.menu1.newMenu["wednesday"]} day={"wednesday"} setRecipes={this.setRecipesDay}/>
+                                            : this.state.index == 3 ? <OneDayMenuCard index={3} recipes={this.props.menu1.newMenu["thursday"]} day={"thursday"} setRecipes={this.setRecipesDay}/>
+                                                : <OneDayMenuCard index={4} recipes={this.props.menu1.newMenu["friday"]} day={"friday"} setRecipes={this.setRecipesDay}/>
                             }
 
                         </Card.Body>
@@ -108,9 +101,24 @@ class CreatingMenu extends Component {
 
         )
     }
+}       
+
+const mapStateToProps = (state, props) => {
+    return {
+        menu1: state.menu
+    }
 }
 
-export default CreatingMenu
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+    }
+}
+
+export default compose(
+    connect(mapStateToProps,mapDispatchToProps),
+    firestoreConnect([{collection:"menu", orderBy:["state","desc"]}])
+)(CreatingMenu)
 
 
 

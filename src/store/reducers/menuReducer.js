@@ -3,11 +3,17 @@ const initState = {
     error: "",
     allMenu: {},
     actualMenu: "", 
-    monday:[], 
-    tuesday:[], 
-    wednesday:[],
-    thursday:[],
-    friday:[]
+    newMenu : {
+        author: "",
+        creatingDate: "",
+        date: "",
+        state: "2",
+        monday: [{"recipe":"hhhh", "portions":"4"}],
+        tuesday: [{"recipe":"iii", "portions":"4"}],
+        wednesday: [{"recipe":"jjjj", "portions":"4"}],
+        thursday: [{"recipe":"kkk", "portions":"4"}],
+        friday: [{"recipe":"llll", "portions":"4"}]
+    }
 }
 
 const menuReducer=(state=initState, action) => {
@@ -68,6 +74,22 @@ const menuReducer=(state=initState, action) => {
                 error: "", 
                 actualMenu: action.payload
             }
+
+        
+        case "SET_FIRST":
+            return {
+                ...state,
+                loading: false, 
+                error: "", 
+                actualMenu: action.payload
+            }
+        
+        case "PUSH_RECIPES":
+            return {
+                ...state, 
+                newMenu: action.payload
+            }
+
         
         default:
             return state

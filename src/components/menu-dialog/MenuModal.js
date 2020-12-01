@@ -2,7 +2,9 @@ import React,{ Children, useState }  from "react";
 import {Button,Modal} from 'react-bootstrap'
 import Ingredients from "./Ingredients"
 import FilteredRecipes from "./FilteredRecipes"
-
+import { connect } from "react-redux"
+import {compose} from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 
 
 const MenuModal = (props) => {
@@ -12,6 +14,10 @@ const MenuModal = (props) => {
     var day = props.day;
     var number = props.number;
     var selectedRecipe = "";
+    var newMenu = props.menu1.newMenu
+
+    console.log("OKKK")
+    console.log(newMenu)
 
     const setRecipe = (recipe) => {selectedRecipe = recipe}
 
@@ -42,7 +48,35 @@ const MenuModal = (props) => {
             
           </Modal.Body>
           <Modal.Footer style = {{justifyContent:'center'}}>
-                    <Button variant="success" onClick={() => {props.add(selectedRecipe); setShow(false)}} style = {{width:"25%", fontSize:"20px"}}>Select</Button>
+                    <Button variant="success" onClick={() => {
+                      var rec = []
+                      if(props.day == "monday"){
+                        rec = props.menu1.newMenu.monday
+                        rec.push({recipe:selectedRecipe,portions:"5"})
+                        newMenu.monday = rec
+                      } else if(props.day == "tuesday"){
+                        rec = props.menu1.newMenu.tuesday
+                        rec.push({recipe:selectedRecipe,portions:"5"})
+                        newMenu.tuesday = rec
+                      } else if(props.day == "wednesday"){
+                        rec = props.menu1.newMenu.wednesday
+                        rec.push({recipe:selectedRecipe,portions:"5"})
+                        newMenu.wednesday = rec
+                      } else if(props.day == "thursday"){
+                        rec = props.menu1.newMenu.thursday
+                        rec.push({recipe:selectedRecipe,portions:"5"})
+                        newMenu.thursday = rec
+                      } else if(props.day == "friday"){
+                        rec = props.menu1.newMenu.friday
+                        rec.push({recipe:selectedRecipe,portions:"5"})
+                        newMenu.friday = rec
+                      }
+                      console.log(newMenu)
+                      props.setNewMenu(newMenu)
+                      setShow(false)}
+                    } 
+                      
+                    style = {{width:"25%", fontSize:"20px"}}>Select</Button>
           </Modal.Footer>
         </Modal>
       </>
@@ -50,4 +84,29 @@ const MenuModal = (props) => {
   }
   
 
-  export default MenuModal
+const mapStateToProps = (state, props) => {
+    return {
+        menu1: state.menu
+    }
+}
+
+const setNewMenu = (menu) => {
+    return {
+        type: "PUSH_RECIPES", 
+        payload: menu
+    }
+}
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+       //addItem: () => dispatch(addItem())
+       setNewMenu: (menu) => dispatch(setNewMenu(menu)) 
+    }
+}
+
+
+export default compose(
+    connect(mapStateToProps,mapDispatchToProps),
+    //firestoreConnect([{}])
+)(MenuModal)
