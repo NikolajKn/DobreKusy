@@ -46,29 +46,6 @@ export const fetchAllMenu = () => {
 }
 
 
-/*
-export const fetchMenu = (id) => {
-    return (dispatch) => {
-        dispatch(sendRequest())
-        const db = firebase.firestore()
-        db.collection("menu").doc(id).get()
-        .then(response => {
-            console.log(response.data())
-            /*var result = {}
-            response.docs.map(doc => {
-                result[doc.id] = doc.data()
-            })*/
-            //console.log("TU")
-            //console.log(result)
-            //dispatch(fetchMenuSuccess(result))
-/*        })
-        .catch(error => {
-            dispatch(fail(error.message))
-        })
-        
-    }
-}*/
-
 export const editItem = (menu, index) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {
         const firestore = getFirestore();
@@ -82,9 +59,40 @@ export const editItem = (menu, index) => {
             wednesday: menu.wednesday, 
             tuesday: menu.tuesday, 
             monday: menu.monday
-        }).then(
-            (docRef)=> {} 
-        )
+        })
         
+    }
+}
+
+export const addItem = (menu) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firestore = getFirestore();
+        var curr = new Date;
+        var date1 = new Date(curr.setDate(curr.getDate() - curr.getDay()+8))
+        firestore.collection("menu").add({
+            author: "tester",
+            creatingDate: {nanoseconds: 0,
+                seconds: Date.now()/1000} ,
+            date: {nanoseconds: 0,
+                seconds: date1/1000},
+
+            state: "2",
+            monday: menu.monday,
+            tuesday: menu.tuesday,
+            wednesday: menu.wednesday,
+            thursday: menu.thursday,
+            friday: menu.friday
+        })
+        
+        
+    }
+}
+
+export const deleteItem = (id) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firestore = getFirestore();
+
+        firestore.collection("menu").doc(id).delete() 
+         
     }
 }

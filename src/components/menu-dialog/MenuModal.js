@@ -9,7 +9,7 @@ import { firestoreConnect } from "react-redux-firebase";
 
 const MenuModal = (props) => {
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {setShow(false);props.setNewFilter([])}
     const handleShow = () => setShow(true);
     var day = props.day;
     var number = props.number;
@@ -34,7 +34,7 @@ const MenuModal = (props) => {
           style={{}}
         >
           <Modal.Header  style={{ backgroundColor: '#64697A', color:'white',padding:"20px"}}>
-         <Modal.Title>{day} - {number}.recipe</Modal.Title>
+         <Modal.Title>{day}</Modal.Title>
          <Button variant="danger" onClick={handleClose} style={{fontWeight:"bold"}}>x</Button>
         
           </Modal.Header> 
@@ -84,6 +84,8 @@ const MenuModal = (props) => {
   }
   
 
+  
+
 const mapStateToProps = (state, props) => {
     return {
         menu1: state.menu
@@ -97,11 +99,18 @@ const setNewMenu = (menu) => {
     }
 }
 
+const setNewFilter = (filter) => {
+  return {
+      type: "SET_FILTER", 
+      payload: filter
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
        //addItem: () => dispatch(addItem())
-       setNewMenu: (menu) => dispatch(setNewMenu(menu)) 
+       setNewMenu: (menu) => dispatch(setNewMenu(menu)),
+       setNewFilter: (filter) => dispatch(setNewFilter(filter))
     }
 }
 

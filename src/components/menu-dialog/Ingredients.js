@@ -11,38 +11,45 @@ class Ingredients extends Component{
     
     constructor(props){
       super(props);
-      this.ingredients1 = []
-      this.props.storage && Object.keys(this.props.storage).map((ing, index) => 
-        {
-          this.ingredients1.push(this.props.storage[ing].name)
-        }  
-      )      
-      this.expiration1 = []
-      this.props.storage && Object.keys(this.props.storage).map((ing, index) => {
-            var itemDate = new Date(this.props.storage[ing].expirationDate.seconds*1000)
-            var currentDate = new Date(Date.now())
-            var dateDiff =  Math.floor(( itemDate - currentDate ) / 86400000);  
-            if(dateDiff <= 7){
-              this.expiration1.push(this.props.storage[ing].name)
-            }
-        }  
-      )
 
-      console.log(this.props.storage)
       this.state = {
-        expiration: this.expiration1,
-        checked:[-1,-1,-1],
+        expiration: [],
+        checked:[],
         filterBox:[],
         filterText:{},
         ind:0,
-        ingredients: this.ingredients1,
+        ingredients: [],
         current:null,
        };
     }
 
-    componentDidMount() {
-      this.setState({ingredients:this.ingredients1})
-      this.setState({expiration:this.expiration1})
+    componentDidUpdate(prevProps) {
+      if(this.props !== prevProps){
+        this.ingredients1 = []
+        this.props.storage && Object.keys(this.props.storage).map((ing, index) => 
+          {
+            this.ingredients1.push(this.props.storage[ing].name)
+          }  
+        )      
+        this.expiration1 = []
+        this.props.storage && Object.keys(this.props.storage).map((ing, index) => {
+              var itemDate = new Date(this.props.storage[ing].expirationDate.seconds*1000)
+              var currentDate = new Date(Date.now())
+              var dateDiff =  Math.floor(( itemDate - currentDate ) / 86400000);  
+              if(dateDiff <= 7){
+                this.expiration1.push(this.props.storage[ing].name)
+              }
+          }  
+        )
+        var chec = []
+        for(let i = 0; i < this.expiration1.length; i++){
+          chec.push(-1)
+        }
+        this.setState({checked:chec})
+        this.setState({ingredients:this.ingredients1})
+        this.setState({expiration:this.expiration1})
+        console.log(this.state)
+      }
     }
 
     handleClick = () => {
@@ -59,17 +66,13 @@ class Ingredients extends Component{
         var newFilterText = this.state.filterText;
         delete newFilterText[index];
         this.setState({filterText:newFilterText})
-        console.log(this.state.filterText)
         
       }
-
-     
 
       onChangeCheckbox = (e) =>{
         var index = e.target.id.replace("e","")
         if(this.state.checked[index]==-1){
           this.state.checked[index]=0
-          console.log("zapnute")
 
         var newFilter = this.state.filterBox
         newFilter.push(this.state.expiration[index])
@@ -83,61 +86,54 @@ class Ingredients extends Component{
         }
       }
 
-    
-
-
+  
       onInputChangeTextType = (value,event) =>{
-        console.log("tu")
-        console.log(value)
-        console.log(event)
+
         var name = event.target.id;
         var val = value;
         var newFilterText = this.state.filterText;
         newFilterText[name] = val
         this.setState({filterText:newFilterText})
-        console.log(this.state.filterText)
-        
-
-
+  
       }
 
       
       onFocusTextType = (e) =>{
-        console.log(e.target.id)
         var newCurrent = e.target.id
         this.setState({current:newCurrent})
       }
       
 
       onChangeTextType = (value) =>{
-        console.log("tu")
-        console.log(value)
+
         
         var name = this.state.current;
         var val = value;
         var newFilterText = this.state.filterText;
         newFilterText[name] = val
         this.setState({filterText:newFilterText})
-        console.log(this.state.filterText)
         
-
-
       }
       
 
     render(){
-      console.log("XXXXXXXXx")
-      console.log(this.state.expiration)
-      console.log(this.state.expiration === undefined)
-      if(this.state.expiration === undefined || this.state.expiration.length == 0){
-        return <div>LOAD</div>
-      } else{
         return(
           <Card style = {{borderColor:"#64697A"}}>
               <Card.Header style={{ backgroundColor: '#64697A', color:'white'}}> 
               <h4 className="float-left" style={{width:"50%"}}>Select ingredients for recipe:</h4>
               <div className="float-right" style={{width:"50%"}}>
-              <Button  className="float-right" variant="success">Apply filter</Button>
+              <Button  className="float-right" variant="success" onClick={(e)=> {
+                              var arrayFilter = this.props.menuState.filterIngredients
+                              for(let i = 0; i < this.state.checked.length; i++){
+                                if(this.state.checked[i] == 0){
+                                  arrayFilter.push(this.state.expiration[i])
+                                }
+                              }
+                              for (const [key, value] of Object.entries(this.state.filterText)) {
+                                arrayFilter.push(value);
+                              }
+                              this.props.setNewFilter(arrayFilter)
+                            }}>Apply filter</Button>
               </div>
               </Card.Header>
   
@@ -194,24 +190,11 @@ class Ingredients extends Component{
             ) }
   
   </div>
-  
-  {
-    Object.entries(this.state.filterText).map(([k, v]) =>(
-      <p key={k}>
-        {k} : {v}
-      </p>
-    ))
-  }
-  
-  
-  
-                  
-                
               </Card.Body>
             </Card>
   
           )
-      }
+
 
     }
     
@@ -219,15 +202,25 @@ class Ingredients extends Component{
 
 }
 
+
+const setNewFilter = (filter) => {
+  return {
+      type: "SET_FILTER", 
+      payload: filter
+  }
+}
+
 const mapStateToProps = (state, props) => {
   return {
-      storage: state.firestore.data.storage
+      storage: state.firestore.data.storage, 
+      menuState: state.menu
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-     addItem: () => dispatch(addItem())
+    setNewFilter: (filter) => dispatch(setNewFilter(filter)),
+    addItem: () => dispatch(addItem())
   }
 }
 

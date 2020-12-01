@@ -2,9 +2,10 @@ const initState = {
     loading: false, 
     error: "",
     allMenu: {},
-    actualMenu: "", 
+    actualMenu: "",
+    minimal: false, 
     newMenu : {
-        author: "",
+        author: "tester",
         creatingDate: "",
         date: "",
         state: "2",
@@ -13,7 +14,8 @@ const initState = {
         wednesday: [],
         thursday: [],
         friday: []
-    }
+    },
+    filterIngredients:[]
 }
 
 const menuReducer=(state=initState, action) => {
@@ -90,7 +92,22 @@ const menuReducer=(state=initState, action) => {
                 newMenu: action.payload
             }
 
+        case "SET_MINIMAL":
+            return {
+                ...state,
+                loading: false, 
+                error: "", 
+                minimal: action.payload
+            }
         
+        case "SET_FILTER":
+            return {
+                ...state,
+                loading: false, 
+                error: "", 
+                filterIngredients: action.payload
+            }
+
         default:
             return state
     }

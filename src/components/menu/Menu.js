@@ -11,24 +11,30 @@ class Menu extends Component{
 
     constructor(props){
         super(props);
-        this.state = {minimal : false};
     }
 
     render(){
         if(!this.props.menu1.actualMenu){
             return(
-                this.state.minimal ? 
+                this.props.menu1.minimal ? 
                 <AllMenuMinimal/>
                 : 
                 <Container>
                     <h1>All menu</h1>
-                    <Button variant="success" className="buttonAddMenu" onClick={() => this.setState({minimal:true})}> + New menu</Button>
+                    <Button variant="success" className="buttonAddMenu" onClick={() => this.props.setMinimal(true)}> + New menu</Button>
                     <AllMenuCards numCol="6"/>
                 </Container>
             )
         } else {
             return <MenuDetail index={this.props.menu1.actualMenu} />
         }
+    }
+}
+
+const setMinimal = (minimal) => {
+    return {
+        type: "SET_MINIMAL", 
+        payload: minimal
     }
 }
 
@@ -40,7 +46,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        setMinimal: (minimal) => dispatch(setMinimal(minimal)) 
     }
 }
 

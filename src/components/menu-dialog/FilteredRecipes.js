@@ -7,10 +7,6 @@ import { firestoreConnect } from "react-redux-firebase";
 
 import {addItem} from "../../store/actions/recipeActions"
 
-
-
-
-
 class FilteredRecipes extends Component{
 
     constructor(props){
@@ -30,7 +26,7 @@ class FilteredRecipes extends Component{
             selected:null,
             search:null,
             selectedRadioId:null,
-
+            filterRecipes:[]
         };
     }
 
@@ -61,6 +57,34 @@ class FilteredRecipes extends Component{
     }
 
     render(){
+        var filterRecipes = []
+        if(this.props.menuState.filterIngredients.length == 0){
+            filterRecipes = this.state.recipes
+        } else{
+            var arrIngr = this.props.menuState.filterIngredients;
+            console.log(arrIngr)
+            for(let i = 0; i < this.state.recipesID.length; i++){
+                var name = this.props.recipes[this.state.recipesID[i]].name
+                var recipeIngredients = []
+                console.log(this.props.recipes[this.state.recipesID[i]].ingredients)
+                for(let j = 0; j < this.props.recipes[this.state.recipesID[i]].ingredients.length; j++){
+                    if(this.props.recipes[this.state.recipesID[i]].ingredients[j]){
+                        recipeIngredients.push(this.props.recipes[this.state.recipesID[i]].ingredients[j].name)
+                    }
+                }
+                var correct = true
+                for(let j = 0; j < arrIngr.length; j++){
+                    if(!recipeIngredients.includes(arrIngr[j])){
+                        correct = false
+                    }
+                }
+                if(correct){
+                    filterRecipes.push(name)
+                }
+            }
+        }
+        console.log("FILETR RECIPES")
+        console.log(filterRecipes)
         return(
 
         <Card style = {{borderColor:"#64697A"}}>
@@ -78,13 +102,13 @@ class FilteredRecipes extends Component{
             <Card.Body style = {{overflow: "auto", height:"200px"}}>
 
                 {
-                    this.state.recipes.filter((data)=>{
+                    filterRecipes.filter((data)=>{
                         if(this.state.search == null)
                             return data
                         else if(data.toLowerCase().includes(this.state.search.toLowerCase())){
                             return data
                         }
-                      }).map((recipe,index)=>
+                      }).map((recipe,index)=> 
                       <Form.Check 
                     key={index}
                     type="radio" 
@@ -103,14 +127,14 @@ class FilteredRecipes extends Component{
 
         )
     }
-    
-    
-
 }
 
+
+  
 const mapStateToProps = (state, props) => {
     return {
-        recipes: state.firestore.data.recipes
+        recipes: state.firestore.data.recipes,
+        menuState: state.menu
     }
 }
 

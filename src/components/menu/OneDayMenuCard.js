@@ -16,18 +16,15 @@ class OneDayMenuCard extends Component {
         console.log(this.state)
     }
 
- /*   addRecipe(recipe) {
-        console.log("NEWWW")
-        console.log(recipe)
-        console.log(this.state)
-        if(this.state){
-            var newRecipes = this.state.recipes
-            newRecipes.push(recipe);
-            console.log("NEWWW")
-            console.log(recipe)
-            //this.setState({recipes:newRecipes})
-        }
-    }*/
+    handleClick2 = (e) => {
+
+        var index = "t"+e.target.id.replace("b","");
+        var newFilterText = this.state.filterText;
+        delete newFilterText[index];
+        this.setState({filterText:newFilterText})
+        console.log(this.state.filterText)
+        
+      }
 
     render(){
         var recipes = [];
@@ -52,9 +49,24 @@ class OneDayMenuCard extends Component {
                      recipes && recipes.length != 0 ? 
                         recipes.map((recipe1, index) => 
                             <Row key={index}>
-                                <Col sm={0.5}><Button variant="danger" className="rounded-circle"> X </Button></Col>
-                                <Col sm={7}><p>{recipe1.recipe}</p></Col>
-                                <Col sm={4.5}><PlusMinusButton /></Col>
+                                <Col sm={0.5}><Button variant="danger" className="rounded-circle" data-index = {index} 
+                            onClick={(e)=> {
+                                recipes.splice(e.target.dataset.index, 1);
+                                var newMenu= this.props.menu1.newMenu
+                                if (this.props.day == "monday"){
+                                    newMenu.monday = recipes
+                                } else if(this.props.day == "tuesday"){
+                                    newMenu.tuesday = recipes
+                                } else if(this.props.day == "wednesday"){
+                                    newMenu.wednesday = recipes
+                                } else if(this.props.day == "thursday"){
+                                    newMenu.thursday = recipes
+                                } else if(this.props.day == "friday"){
+                                    newMenu.friday = recipes
+                                }
+                                this.props.setNewMenu(newMenu)
+                            }}> X </Button></Col>
+                                <Col sm={7}><p style={{color:"black"}}>{this.props.recipes1[recipe1.recipe].name}</p></Col>
                             </Row>
                         ) 
                     :
@@ -66,20 +78,30 @@ class OneDayMenuCard extends Component {
      
 }
 
+const setNewMenu = (menu) => {
+    return {
+        type: "PUSH_RECIPES", 
+        payload: menu
+    }
+}
+
 const mapStateToProps = (state, props) => {
     return {
-        menu1: state.menu
+        menu1: state.menu,
+        recipes1: state.firestore.data.recipes
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        setNewMenu: (menu) => dispatch(setNewMenu(menu)) 
     }
 }
 
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
-    firestoreConnect([{collection:"menu", orderBy:["state","desc"]}])
+    firestoreConnect([{collection:"menu", orderBy:["state","desc"]},{collection:"recipes"}])
 )(OneDayMenuCard)
-
+/*
+<Col sm={4.5}><PlusMinusButton /></Col>
+*/

@@ -6,6 +6,8 @@ import { connect } from "react-redux"
 import {fetchAllMenu} from "../../store/actions/menuActions"
 import {compose} from "redux";
 import { firestoreConnect } from "react-redux-firebase";
+import {addItem} from "../../store/actions/menuActions"
+
 
 class CreatingMenu extends Component {
 
@@ -43,24 +45,17 @@ class CreatingMenu extends Component {
     };
 
     saveMenu() {
-        var monRec = this.props.menu1.newMenu.monday
-        var tueRec = this.props.menu1.newMenu.tuesday
-        var wedRec = this.props.menu1.newMenu.wednesday
-        var thuRec = this.props.menu1.newMenu.thursday
-        var friRec = this.props.menu1.newMenu.friday
 
-
-        var menu = JSON.parse(localStorage.getItem("allMenu"));
-        var menu1 = ["Menu6", "01.01.2020 - 05.01.2020", "userAdmin", "01.01.2020", "01.01.2020", "x"];
-        //var recipes1 = JSON.parse(localStorage.getItem("recipes"));
-
-        menu.push(menu1);
-        console.log(menu)
-        localStorage.setItem("allMenu", JSON.stringify(menu));
+        var newMenu = this.props.menu1.newMenu
+        var creatingDate = Date.now()
+        newMenu.creatingDate = creatingDate
+        newMenu.date = Date.now()
+        console.log(newMenu)
         console.log("NEW MENU")
-        console.log(this.newMenu)
-        this.setMonday("monday", [])
-        console.log(this.newMenu)
+        console.log(this.props.menu1.newMenu)
+        this.props.addItem(newMenu)
+        this.props.setMinimal(false)
+        //window.location.reload(false)
     }
 
     render() {
@@ -109,7 +104,14 @@ class CreatingMenu extends Component {
 
         )
     }
-}       
+}  
+
+const setMinimal = (minimal) => {
+    return {
+        type: "SET_MINIMAL", 
+        payload: minimal
+    }
+}
 
 const mapStateToProps = (state, props) => {
     return {
@@ -119,7 +121,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        addItem: (menu) => dispatch(addItem(menu)), 
+        setMinimal: (minimal) => dispatch(setMinimal(minimal)) 
     }
 }
 
