@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Row} from "react-bootstrap"
 import CreatingMenu from './CreatingMenu'
-import SidebarMenu from './SidebarMenu'
+import AllMenuCards from './AllMenuCards';
 
 class AllMenuMinimal extends Component{
 
@@ -15,7 +15,7 @@ class AllMenuMinimal extends Component{
         return(
             <Row>
                 <div className="col-2 vl">
-                    <SidebarMenu numCol={12} allMenu={allMenu}/>
+                    <AllMenuCards numCol={12} allMenu={allMenu} sidebar={true} />
                 </div>
                 <div className="col-9">
                     <CreatingMenu recipes={recipes}/>

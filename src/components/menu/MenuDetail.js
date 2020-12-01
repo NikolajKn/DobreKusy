@@ -35,7 +35,7 @@ class MenuDetail extends Component {
         var nameDate = null
         var recipes = []
         if (this.props.menu){
-            actualMenu = this.props.menu["HbutYPLrHAWkjAHIvD4n"]
+            actualMenu = this.props.menu[this.props.index]
             date = new Date(actualMenu.date.seconds*1000)
             console.log(actualMenu.date)
             date1 = new Date((actualMenu.date.seconds + second5day) * 1000)
@@ -46,7 +46,7 @@ class MenuDetail extends Component {
             recipes.push(actualMenu.thursday)
             recipes.push(actualMenu.friday)
         }
-        
+
         return(
                 <Container>
                 <Row>
@@ -66,21 +66,15 @@ class MenuDetail extends Component {
                 {days.map((day, index) => 
                     <Table key={index} striped hover className="detailMenu">
                             <thead>
-                            <tr>
-                                 <th>{day}</th>
-                            </tr>
+                            <tr><th>{day}</th></tr>
                             </thead>
                             <tbody>
-                                {
-                                    recipes.length && recipes[index].map((recipe1, index1) =>
-                                    <tr key={index1}>
-                                        <td>
-                                        <Accordion>
+                                {recipes.length && recipes[index].map((recipe1, index1) =>
+                                    <tr key={index1}><td><Accordion>
                                         <Accordion.Toggle as={Button} variant="link" eventKey="0" >
                                             {this.props.recipes && this.props.recipes[recipe1.recipe] && this.props.recipes[recipe1.recipe].name}
                                             {' '}
                                             {imgDown()}
-
                                         </Accordion.Toggle>
                                         <Accordion.Collapse eventKey="0">
                                             <ul>
@@ -91,8 +85,7 @@ class MenuDetail extends Component {
                                             </ul> 
                                         </Accordion.Collapse>
                                         </Accordion></td>
-                                        <td className="align-middle">{recipe1.portions}x</td>
-                                    </tr>
+                                        <td className="align-middle">{recipe1.portions}x</td></tr>
                             )}
                             </tbody>
                     </Table>            

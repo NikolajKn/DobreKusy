@@ -41,10 +41,11 @@ export const fetchAllMenu = () => {
         })
         .catch(error => {
             dispatch(fail(error.message))
-        })
-        
+        })  
     }
 }
+
+
 /*
 export const fetchMenu = (id) => {
     return (dispatch) => {

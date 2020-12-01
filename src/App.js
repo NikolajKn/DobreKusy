@@ -6,6 +6,7 @@ import Home from "./components/home/Home"
 import Menu from "./components/menu/Menu"
 import MenuDetail from "./components/menu/MenuDetail"
 import StorageBoard from "./components/storage/StorageBoard"
+import MenuDialog from "./components/menu-dialog/MenuDialog"
 
 function App() {
 
@@ -16,7 +17,7 @@ function App() {
       <Route path = "/menu" exact component={Menu}/>
       <Route path = "/detail" exact component={MenuDetail}/>
       <Route path = "/storage" exact component={StorageBoard}/>
-
+      <Route path = "/menuDialog" exact component={MenuDialog}/>
     </Switch>
     </BrowserRouter>
   );

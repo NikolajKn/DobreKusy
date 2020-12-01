@@ -2,11 +2,15 @@ const initState = {
     loading: false, 
     error: "",
     allMenu: {},
-    actualMenu: null 
+    actualMenu: "", 
+    monday:[], 
+    tuesday:[], 
+    wednesday:[],
+    thursday:[],
+    friday:[]
 }
 
 const menuReducer=(state=initState, action) => {
-
     switch(action.type){
         case "SEND_REQUEST":
             return {
@@ -55,6 +59,14 @@ const menuReducer=(state=initState, action) => {
                 loading: false, 
                 error: "", 
                 actualMenu: null
+            }
+
+        case "SET_ACTUAL_MENU":
+            return {
+                ...state,
+                loading: false, 
+                error: "", 
+                actualMenu: action.payload
             }
         
         default:

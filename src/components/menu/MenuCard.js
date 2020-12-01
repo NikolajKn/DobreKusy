@@ -6,8 +6,8 @@ import {connect} from "react-redux";
 import {compose} from "redux";
 import {editItem} from "../../store/actions/menuActions"
 
-const MenuCard = (props) => {
 
+const MenuCard = (props) => {
         const second5day = 432000;
         var usingDate = props.menu.date.seconds
         var author= props.menu.author
@@ -40,17 +40,20 @@ const MenuCard = (props) => {
                                 tooltipBasic("Declined!", imgCross(), "delete")
                             
                             }
-                            <Button variant="link">
+                            <Button className="btnNameMenu" data-index = {props.index} 
+                            onClick={(e)=> props.setActualMenu(e.target.dataset.index)}>
                                 {date.toLocaleDateString()} - {date1.toLocaleDateString()}
                             </Button>
                         </Col>
-
-                        <Col sm={1} style={{padding:"0px 0px 0px 0px"}}>
+                        {
+                            props.sidebar ? null
+                            :
+                            <Col sm={1} style={{padding:"0px 0px 0px 0px"}}>
                             <Button variant="danger" className="d-flex justify-content-center btnDelete" style={{width:"50px", height:"50px"}} >
                                 {imgTrash()}
                             </Button>
-                        </Col>
-
+                            </Col>
+                        }
                     </Row>
                     </Card.Header>
                     <Card.Body className="menuCardFooter">
@@ -64,14 +67,23 @@ const MenuCard = (props) => {
 
 const mapStateToProps = (state, props) => {
     return {
-   
+        menuX: state.menu
     }
 }
+
+const setActualMenu = (id) => {
+    return {
+        type: "SET_ACTUAL_MENU", 
+        payload: id
+    }
+}
+
 
 const mapDispatchToProps = (dispatch) => {
     return {
        //addItem: () => dispatch(addItem())
-       editItem: (item, index) => dispatch(editItem(item, index))
+       editItem: (item, index) => dispatch(editItem(item, index)),
+       setActualMenu: (id) => dispatch(setActualMenu(id)) 
     }
 }
 

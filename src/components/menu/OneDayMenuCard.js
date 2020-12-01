@@ -1,43 +1,42 @@
 import React, {Component} from 'react'
 import {Container, Row, Button, Col} from "react-bootstrap"
 import PlusMinusButton from './commonElements/PlusMinusButton'
-
+import MenuModal from "../menu-dialog/MenuModal"
 class OneDayMenuCard extends Component {
 
     constructor(props){
         super(props);
-        var recipes1 = JSON.parse(localStorage.getItem("recipes"));
-        var recipeAtDay1 = recipes1[props.index];
-        this.state = {recipes:recipes1, recipeAtDay:recipeAtDay1}
-
+        var recipes1 = this.props.recipes
+        this.state = {recipes:recipes1}
+        console.log(this.state)
     }
 
-    addRecipe() {
-        var newRecipeAtDay = this.state.recipeAtDay;
-        newRecipeAtDay.push("RecipeRandom"); 
-        this.setState({recipeAtDay:newRecipeAtDay});
-
-        var newRecipes = this.state.recipes
-        newRecipes[this.props.index] = this.state.recipeAtDay; 
-        this.setState({recipes:newRecipes})
-        localStorage.setItem("recipes", JSON.stringify(this.state.recipes))
+    addRecipe(recipe) {
+        console.log("NEWWW")
+        console.log(recipe)
+        console.log(this.state)
+        if(this.state){
+            var newRecipes = this.state.recipes
+            newRecipes.push(recipe);
+            console.log("NEWWW")
+            console.log(recipe)
+            //this.setState({recipes:newRecipes})
+        }
     }
 
     render(){
-        var recipes1 = JSON.parse(localStorage.getItem("recipes"));
-        var recipeAtDay1 = recipes1[this.props.index];
-
+        this.addRecipe("CCC")
         return(
             <Container className="recipeInMenu">
                 <Row>
-                    <Button variant="success" className="rounded-circle" onClick={()=>{this.addRecipe()}}> + </Button>
+                    <MenuModal day="monday" number="1" add={this.addRecipe} />
                 </Row>
                 {
-                    recipeAtDay1 && recipeAtDay1.length != 0 ? 
-                        recipeAtDay1.map((recipe, index) => 
+                    this.state.recipes && this.state.recipes.length != 0 ? 
+                        this.state.recipes.map((recipe1, index) => 
                             <Row key={index}>
                                 <Col sm={0.5}><Button variant="danger" className="rounded-circle"> X </Button></Col>
-                                <Col sm={7}><p>{recipe}</p></Col>
+                                <Col sm={7}><p>{recipe1.recipe}</p></Col>
                                 <Col sm={4.5}><PlusMinusButton /></Col>
                             </Row>
                         ) 

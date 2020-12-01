@@ -2,25 +2,21 @@ import React, {Component} from 'react'
 import {Button, Container} from "react-bootstrap"
 import AllMenuCards from "./AllMenuCards"
 import AllMenuMinimal from "./AllMenuMinimal"
+import MenuDetail from "./MenuDetail"
+import { connect } from "react-redux"
+import {compose} from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 
 class Menu extends Component{
 
     constructor(props){
         super(props);
         this.state = {minimal : false};
-        var allMenu = [["Menu", "01.01.2020 - 05.01.2020", "userAdmin", "01.01.2020", "01.01.2020", null],
-                        ["Menu", "01.01.2020 - 05.01.2020", "userAdmin", "01.01.2020", "01.01.2020", true], 
-                        ["Menu", "01.01.2020 - 05.01.2020", "userAdmin", "01.01.2020", "01.01.2020", true], 
-                        ["Menu", "01.01.2020 - 05.01.2020", "userAdmin", "01.01.2020", "01.01.2020", false],
-                        ["Menu", "01.01.2020 - 05.01.2020", "userAdmin", "01.01.2020", "01.01.2020", true]];
-
-        var recipes = [["Recipe1", "Recipe2"], ["Recipe3", "Recipe4", "Recipe5"], ["Recipe7", "Recipe10"], ["Recipe15", "Recipe2"], ["Recipe1"]];
-        localStorage.setItem("allMenu", JSON.stringify(allMenu))
-        localStorage.setItem("recipes", JSON.stringify(recipes))
     }
 
     render(){
-        return(
+        if(!this.props.menu1.actualMenu){
+            return(
                 this.state.minimal ? 
                 <AllMenuMinimal/>
                 : 
@@ -29,9 +25,26 @@ class Menu extends Component{
                     <Button variant="success" className="buttonAddMenu" onClick={() => this.setState({minimal:true})}> + New menu</Button>
                     <AllMenuCards numCol="6"/>
                 </Container>
-
-        )
+            )
+        } else {
+            return <MenuDetail index={this.props.menu1.actualMenu} />
+        }
     }
 }
 
-export default Menu
+const mapStateToProps = (state, props) => {
+    return {
+        menu1: state.menu
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+    }
+}
+
+export default compose(
+    connect(mapStateToProps,mapDispatchToProps),
+    firestoreConnect([{collection:"menu", orderBy:["state","desc"]}])
+)(Menu)
