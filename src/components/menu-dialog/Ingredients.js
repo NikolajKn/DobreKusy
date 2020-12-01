@@ -48,7 +48,6 @@ class Ingredients extends Component{
         this.setState({checked:chec})
         this.setState({ingredients:this.ingredients1})
         this.setState({expiration:this.expiration1})
-        console.log(this.state)
       }
     }
 
@@ -130,7 +129,11 @@ class Ingredients extends Component{
                                 }
                               }
                               for (const [key, value] of Object.entries(this.state.filterText)) {
-                                arrayFilter.push(value);
+                                if(Array.isArray(value)){
+                                  arrayFilter.push(value[0]);
+                                } else {
+                                  arrayFilter.push(value);
+                                }
                               }
                               this.props.setNewFilter(arrayFilter)
                             }}>Apply filter</Button>

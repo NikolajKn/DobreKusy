@@ -73,7 +73,7 @@ const MenuModal = (props) => {
                       }
                       console.log(newMenu)
                       props.setNewMenu(newMenu)
-                      setShow(false)}
+                      handleClose()}
                     } 
                       
                     style = {{width:"25%", fontSize:"20px"}}>Select</Button>

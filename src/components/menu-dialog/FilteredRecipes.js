@@ -23,12 +23,13 @@ class FilteredRecipes extends Component{
         this.state = {
             recipes: recipes1,
             recipesID: recipes1ID,
-            selected:null,
+            selected:"",
             search:null,
             selectedRadioId:null,
             filterRecipes:[]
         };
     }
+
 
     onChangeRadio = (e) =>{
         var newSelected = e.target.dataset.recipe;
@@ -48,7 +49,7 @@ class FilteredRecipes extends Component{
         var newSearch = e.target.value;
         this.setState({search:newSearch});
 
-        var newSelected = null;
+        var newSelected = "";
         console.log(e.target.dataset.recipe);
         this.setState({selected:newSelected});
         var newSelectedRadioId = null;
@@ -62,7 +63,6 @@ class FilteredRecipes extends Component{
             filterRecipes = this.state.recipes
         } else{
             var arrIngr = this.props.menuState.filterIngredients;
-            console.log(arrIngr)
             for(let i = 0; i < this.state.recipesID.length; i++){
                 var name = this.props.recipes[this.state.recipesID[i]].name
                 var recipeIngredients = []
@@ -83,8 +83,6 @@ class FilteredRecipes extends Component{
                 }
             }
         }
-        console.log("FILETR RECIPES")
-        console.log(filterRecipes)
         return(
 
         <Card style = {{borderColor:"#64697A"}}>

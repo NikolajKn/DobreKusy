@@ -48,26 +48,30 @@ class OneDayMenuCard extends Component {
                 {
                      recipes && recipes.length != 0 ? 
                         recipes.map((recipe1, index) => 
+                            this.props.recipes1[recipe1.recipe] ? 
                             <Row key={index}>
-                                <Col sm={0.5}><Button variant="danger" className="rounded-circle" data-index = {index} 
-                            onClick={(e)=> {
-                                recipes.splice(e.target.dataset.index, 1);
-                                var newMenu= this.props.menu1.newMenu
-                                if (this.props.day == "monday"){
-                                    newMenu.monday = recipes
-                                } else if(this.props.day == "tuesday"){
-                                    newMenu.tuesday = recipes
-                                } else if(this.props.day == "wednesday"){
-                                    newMenu.wednesday = recipes
-                                } else if(this.props.day == "thursday"){
-                                    newMenu.thursday = recipes
-                                } else if(this.props.day == "friday"){
-                                    newMenu.friday = recipes
-                                }
-                                this.props.setNewMenu(newMenu)
-                            }}> X </Button></Col>
-                                <Col sm={7}><p style={{color:"black"}}>{this.props.recipes1[recipe1.recipe].name}</p></Col>
-                            </Row>
+                            <Col sm={0.5}><Button variant="danger" className="rounded-circle" data-index = {index} 
+                        onClick={(e)=> {
+                            recipes.splice(e.target.dataset.index, 1);
+                            var newMenu= this.props.menu1.newMenu
+                            if (this.props.day == "monday"){
+                                newMenu.monday = recipes
+                            } else if(this.props.day == "tuesday"){
+                                newMenu.tuesday = recipes
+                            } else if(this.props.day == "wednesday"){
+                                newMenu.wednesday = recipes
+                            } else if(this.props.day == "thursday"){
+                                newMenu.thursday = recipes
+                            } else if(this.props.day == "friday"){
+                                newMenu.friday = recipes
+                            }
+                            this.props.setNewMenu(newMenu)
+                        }}> X </Button></Col>
+                            <Col sm={7}><p style={{color:"black"}}>{this.props.recipes1[recipe1.recipe].name}</p></Col>
+                        </Row>
+                        : null
+                        
+
                         ) 
                     :
                     <p>You have no recipes.</p>
