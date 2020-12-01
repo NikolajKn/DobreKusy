@@ -89,7 +89,7 @@ const StorageBoard = (props) => {
                 </div>
                 :
                 <Container>
-                <Row style={{height : "100px"}}/>
+                <Row style={{height : "20px"}}/>
             
                 <Row className="justify-content-center">            
                     <Col >  

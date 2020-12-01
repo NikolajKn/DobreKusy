@@ -10,7 +10,7 @@ import {editItem, deleteItem} from "../../store/actions/storageActions"
 
 
 const StorageItem = ({item, editItem, deleteItem}) => {
-
+    console.log(item)
     var itemDate = new Date(item.expirationDate.seconds*1000)
     var currentDate = new Date(Date.now())
     var dateDiff =  Math.floor(( itemDate - currentDate ) / 86400000);
