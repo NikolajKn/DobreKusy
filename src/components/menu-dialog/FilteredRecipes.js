@@ -40,9 +40,12 @@ class FilteredRecipes extends Component{
         this.setState({selected:newSelected});
         var newSelectedRadioId = e.target.id;
         this.setState({selectedRadioId:newSelectedRadioId});
-        this.props.set(newSelected)
-        this.props.set(newSelected)
-        //localStorage.setItem('yourRecipe', newSelected);
+        this.props.recipes && Object.keys(this.props.recipes).map((recipe, index) => {
+            if(this.props.recipes[recipe].name == newSelected){
+                this.props.set(recipe)
+            }  
+        })
+       // this.props.set(newSelected)
     }
 
     onChangeSearch = (e) =>{

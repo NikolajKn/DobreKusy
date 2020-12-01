@@ -8,11 +8,11 @@ const initState = {
         creatingDate: "",
         date: "",
         state: "2",
-        monday: [{"recipe":"hhhh", "portions":"4"}],
-        tuesday: [{"recipe":"iii", "portions":"4"}],
-        wednesday: [{"recipe":"jjjj", "portions":"4"}],
-        thursday: [{"recipe":"kkk", "portions":"4"}],
-        friday: [{"recipe":"llll", "portions":"4"}]
+        monday: [],
+        tuesday: [],
+        wednesday: [],
+        thursday: [],
+        friday: []
     }
 }
 

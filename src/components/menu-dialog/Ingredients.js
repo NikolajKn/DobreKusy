@@ -126,85 +126,93 @@ class Ingredients extends Component{
       
 
     render(){
+      console.log("XXXXXXXXx")
+      console.log(this.state.expiration)
+      console.log(this.state.expiration === undefined)
+      if(this.state.expiration === undefined || this.state.expiration.length == 0){
+        return <div>LOAD</div>
+      } else{
         return(
-        <Card style = {{borderColor:"#64697A"}}>
-            <Card.Header style={{ backgroundColor: '#64697A', color:'white'}}> 
-            <h4 className="float-left" style={{width:"50%"}}>Select ingredients for recipe:</h4>
-            <div className="float-right" style={{width:"50%"}}>
-            <Button  className="float-right" variant="success">Apply filter</Button>
-            </div>
-            </Card.Header>
-
-            <Card.Body style= {{overflow: "auto", height:"200px"}}>
-
-            <Button className="rounded-circle" variant="success" style={{ fontWeight:'bold'}} onClick={this.handleClick}>+</Button>
-              
-              {
-              Object.entries(this.state.filterText).reverse().map(([k, v]) => (
-                <div key={k}>
-
-              <Typeahead
-                       className="float-left"
-                       style={{ marginTop:"10px",width:"70%" }}
-                       options={this.state.ingredients}
-                        id = {"typeahead"+k}
-                        positionFixed 
-                        inputProps={{id: k}}
-                        onInputChange = {this.onInputChangeTextType}
-                        onFocus = {this.onFocusTextType}
-                        onChange = {this.onChangeTextType}
-                        placeholder = {"Search ingredient"}
-                        
-                        
-                      />
+          <Card style = {{borderColor:"#64697A"}}>
+              <Card.Header style={{ backgroundColor: '#64697A', color:'white'}}> 
+              <h4 className="float-left" style={{width:"50%"}}>Select ingredients for recipe:</h4>
+              <div className="float-right" style={{width:"50%"}}>
+              <Button  className="float-right" variant="success">Apply filter</Button>
+              </div>
+              </Card.Header>
+  
+              <Card.Body style= {{overflow: "auto", height:"200px"}}>
+  
+              <Button className="rounded-circle" variant="success" style={{ fontWeight:'bold'}} onClick={this.handleClick}>+</Button>
+                
+                {
+                Object.entries(this.state.filterText).reverse().map(([k, v]) => (
+                  <div key={k}>
+  
+                <Typeahead
+                         className="float-left"
+                         style={{ marginTop:"10px",width:"70%" }}
+                         options={this.state.ingredients}
+                          id = {"typeahead"+k}
+                          positionFixed 
+                          inputProps={{id: k}}
+                          onInputChange = {this.onInputChangeTextType}
+                          onFocus = {this.onFocusTextType}
+                          onChange = {this.onChangeTextType}
+                          placeholder = {"Search ingredient"}
+                          
+                          
+                        />
+                    
+  
+                    <Button
+                          className="float-right"
+                          className="rounded-circle"
+                          variant = "danger" 
+                          id = {"b"+k.replace("t","")}
+                          style={{ marginTop:"10px",marginLeft:"10px", fontWeight:"bold" }}
+                          onClick={this.handleClick2}>x</Button>
+                  </div>
+  
+  
+  
                   
-
-                  <Button
-                        className="float-right"
-                        className="rounded-circle"
-                        variant = "danger" 
-                        id = {"b"+k.replace("t","")}
-                        style={{ marginTop:"10px",marginLeft:"10px", fontWeight:"bold" }}
-                        onClick={this.handleClick2}>x</Button>
-                </div>
-
-
-
+                ))}
+            
+  
+  <div style={{marginTop:"10px"}}>
+                {this.state.expiration.map((value, index) => 
+                    <Form.Check
+                      key={index}
+                      type="checkbox"
+                      label= {value+" (expiration)"}
+                      name="formHorizontalRadios"
+                      id={"e"+index}
+                      onChange = {this.onChangeCheckbox}
+                      style = {{fontSize: "20px", color:"red"}}
+                    />
+            ) }
+  
+  </div>
+  
+  {
+    Object.entries(this.state.filterText).map(([k, v]) =>(
+      <p key={k}>
+        {k} : {v}
+      </p>
+    ))
+  }
+  
+  
+  
+                  
                 
-              ))}
-          
+              </Card.Body>
+            </Card>
+  
+          )
+      }
 
-<div style={{marginTop:"10px"}}>
-              {this.state.expiration.map((value, index) => 
-                  <Form.Check
-                    key={index}
-                    type="checkbox"
-                    label= {value+" (expiration)"}
-                    name="formHorizontalRadios"
-                    id={"e"+index}
-                    onChange = {this.onChangeCheckbox}
-                    style = {{fontSize: "20px", color:"red"}}
-                  />
-          ) }
-
-</div>
-
-{
-  Object.entries(this.state.filterText).map(([k, v]) =>(
-    <p key={k}>
-      {k} : {v}
-    </p>
-  ))
-}
-
-
-
-                
-              
-            </Card.Body>
-          </Card>
-
-        )
     }
     
     

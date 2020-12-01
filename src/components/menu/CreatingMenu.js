@@ -43,9 +43,17 @@ class CreatingMenu extends Component {
     };
 
     saveMenu() {
+        var monRec = this.props.menu1.newMenu.monday
+        var tueRec = this.props.menu1.newMenu.tuesday
+        var wedRec = this.props.menu1.newMenu.wednesday
+        var thuRec = this.props.menu1.newMenu.thursday
+        var friRec = this.props.menu1.newMenu.friday
+
+
         var menu = JSON.parse(localStorage.getItem("allMenu"));
         var menu1 = ["Menu6", "01.01.2020 - 05.01.2020", "userAdmin", "01.01.2020", "01.01.2020", "x"];
         //var recipes1 = JSON.parse(localStorage.getItem("recipes"));
+
         menu.push(menu1);
         console.log(menu)
         localStorage.setItem("allMenu", JSON.stringify(menu));
@@ -87,11 +95,11 @@ class CreatingMenu extends Component {
                             <Card.Title className="creatingCardText">Selected recipes:</Card.Title>
 
                             {
-                                this.state.index == 0 ? <OneDayMenuCard index={0} recipes={this.props.menu1.newMenu["monday"]} day={"monday"} setRecipes={this.setRecipesDay} />
-                                    : this.state.index == 1 ? <OneDayMenuCard index={1} recipes={this.props.menu1.newMenu["tuesday"]} day={"tuesday"} setRecipes={this.setRecipesDay}/>
-                                        : this.state.index == 2 ? <OneDayMenuCard index={2} recipes={this.props.menu1.newMenu["wednesday"]} day={"wednesday"} setRecipes={this.setRecipesDay}/>
-                                            : this.state.index == 3 ? <OneDayMenuCard index={3} recipes={this.props.menu1.newMenu["thursday"]} day={"thursday"} setRecipes={this.setRecipesDay}/>
-                                                : <OneDayMenuCard index={4} recipes={this.props.menu1.newMenu["friday"]} day={"friday"} setRecipes={this.setRecipesDay}/>
+                                this.state.index == 0 ? <OneDayMenuCard index={0} day={"monday"} setRecipes={this.setRecipesDay} />
+                                    : this.state.index == 1 ? <OneDayMenuCard index={1} day={"tuesday"} setRecipes={this.setRecipesDay}/>
+                                        : this.state.index == 2 ? <OneDayMenuCard index={2} day={"wednesday"} setRecipes={this.setRecipesDay}/>
+                                            : this.state.index == 3 ? <OneDayMenuCard index={3} day={"thursday"} setRecipes={this.setRecipesDay}/>
+                                                : <OneDayMenuCard index={4} day={"friday"} setRecipes={this.setRecipesDay}/>
                             }
 
                         </Card.Body>
