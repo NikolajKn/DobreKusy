@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Nav } from 'react-bootstrap';
 import { Navbar } from 'react-bootstrap';
 import { NavLink } from 'react-bootstrap';
-import './st.css'
+
 
 const Navba = () => {
 

@@ -30,6 +30,7 @@ const StorageBoard = (props) => {
     }
 
     const handleSave = () => {
+        handleAdd()
         if(Object.keys(newItem).length === 4){
             if(newItem.name !== "" && newItem.amount !== "" && newItem.measurementUnit !== "" && newItem.expirationdate !== ""){ 
                 addItem(newItem)
@@ -73,7 +74,7 @@ const StorageBoard = (props) => {
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
-                        <Button variant = {"success"} onClick={() => handleSave()}>Save</Button>
+                        <Button  variant = {"success"} onClick={() => handleSave()}>Save</Button>
                     </Form.Row>
                 </Form>
             </Collapse>

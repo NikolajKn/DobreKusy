@@ -5,7 +5,7 @@ import Home from "./components/home/Home"
 import StorageBoard from "./components/storage/StorageBoard"
 import './styles.css'
 import Navigation from './components/layout/Navbar'
-//import Menu from './components/menu/Menu'
+import Menu from './components/menu/Menu'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
 //import Recipes from './components/recipes/Recipes'
@@ -20,8 +20,8 @@ function App() {
       <Route path = "/Storage" component={StorageBoard}/>
       <Route path='/SignIn' component={NikoSignIn} />
       
-      {/*<Route path='/Menu' component={Menu} />
-      <Route path='/Recipes' component={Recipes} />*/}
+      <Route path='/Menu' component={Menu} />
+      {/*<Route path='/Recipes' component={Recipes} />*/}
       <Route path='/Home' component={Home} />
       <Route exact path = "/" component={Home}/>
       
