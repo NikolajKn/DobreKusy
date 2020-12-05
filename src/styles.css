@@ -12,3 +12,19 @@
 .tableTextCenter{
   text-align: center;
 }
+
+.myNavItem{
+  color: white !important;
+  font-weight: bold !important;
+  font-size: large !important;
+}
+
+.myNavItemActive{
+  color: #069697 !important;
+  font-weight: bold !important;
+  font-size: large !important;
+}
+
+.myNavItem:hover{
+  color: #069697 !important
+}

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
-import {Container, Row, Col, Button, ListGroup, Table, Form,Collapse, Fade} from "react-bootstrap";
+import {Container, Row, Col, Button, Table, Form,Collapse, Spinner} from "react-bootstrap";
 import {connect} from "react-redux";
 import {compose} from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 
 import {addItem} from "../../store/actions/storageActions"
 import StorageItem from "./StorageItem"
-import DatePicker from "react-datepicker";
+import { useMediaQuery } from 'react-responsive'
 
 
 const StorageBoard = (props) => {
     var {addItem,storage} = props
 
+    const isMobile = useMediaQuery({ query: '(max-width: 760px)' })
     const [add, setAdd] = useState(false)
-    const [newItem, setNewItem] = useState({})
+    const [newItem, setNewItem] = useState({"measurementUnit":"pcs"})
 
     const handleAdd = () => {
         setAdd(!add)
@@ -21,19 +22,23 @@ const StorageBoard = (props) => {
 
     const handleChange = (e, name) => {
         var value = ""
+      
         if(name === "expirationDate"){
             value = e.target.valueAsDate
         }else{
             value = e.target.value
         }
+   
         setNewItem({...newItem, [name] : value})
     }
 
-    const handleSave = () => {
-        handleAdd()
+    const handleSave = (e) => {
+        e.preventDefault()
+        
         if(Object.keys(newItem).length === 4){
             if(newItem.name !== "" && newItem.amount !== "" && newItem.measurementUnit !== "" && newItem.expirationdate !== ""){ 
                 addItem(newItem)
+                handleAdd()
             }
         }
     }
@@ -55,26 +60,32 @@ const StorageBoard = (props) => {
                     <Form.Row>
                         <Form.Group as={Col} controlId="formGridName">
                             <Form.Label>Name</Form.Label>
-                            <Form.Control type="text" placeholder="Enter name" onChange={(e) => handleChange(e,"name")}/>
+                            <Form.Control type="text" placeholder="Enter name" onChange={(e) => handleChange(e,"name")} required/>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="formGridAmount">
                             <Form.Label>Amount</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Amount" onChange={(e) => handleChange(e,"amount")}/>
+                            <Form.Control type="number" placeholder="Enter Amount" onChange={(e) => handleChange(e,"amount")} required/>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="formGridUnit">
                             <Form.Label>Unit</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Unit" onChange={(e) => handleChange(e,"measurementUnit")}/>
+                            <Form.Control as="select" placeholder="Choose Unit" onChange={(e) => handleChange(e,"measurementUnit")} defaultValue="pcs" required>
+                                <option>pcs</option>
+                                <option>kg</option>
+                                <option>g</option>
+                                <option>l</option>
+                                <option>ml</option>
+                            </Form.Control>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="formGridExpiration">
                             <Form.Label>Expiration Date</Form.Label>
-                            <Form.Control type="date" placeholder="Enter Expiration Date" onChange={(e) => handleChange(e,"expirationDate")}/>
+                            <Form.Control type="date" placeholder="Enter Expiration Date" onChange={(e) => handleChange(e,"expirationDate")} required/>
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
-                        <Button  variant = {"success"} onClick={() => handleSave()}>Save</Button>
+                        <Button type="submit" variant = {"success"} style ={{"fontWeight":"bold"}} onClick={(e) => handleSave(e)}>Save</Button>
                     </Form.Row>
                 </Form>
             </Collapse>
@@ -82,54 +93,53 @@ const StorageBoard = (props) => {
     }
       
     return(       
-        <Container fluid>
-            {
-            storage===undefined ?
-                <div>
-                    <h1>Loading</h1>
-                </div>
-                :
-                <Container>
-                <Row style={{height : "20px"}}/>
+        storage===undefined ?
+            <Container className="text-center justify-content-center">
+                <Spinner animation="border" role="status"/>
+            </Container>
+            :
+            <Container as="section" className={isMobile ? "p-0":""}>
             
-                <Row className="justify-content-center">            
-                    <Col >  
-                        <h1 style={{"color":"#069697"}}>Storage</h1>
-                        <Button 
-                        className={"m-1"}
-                        variant={"success"} 
-                        onClick={() => handleAdd()}
-                        aria-controls="addFormCollapse"
-                        aria-expanded={add}
-                        >+</Button>
+            <Row className={isMobile ? "m-0":""} style={{height : "20px"}}/>
+            
+            <Row className={isMobile ? "justify-content-center m-0":"justify-content-center"} >            
+                <Col className={isMobile ? "p-0":""}>  
+                    <h1 style={{"color":"#069697"}}>Storage</h1>
+                    <Button 
+                    className={"m-1"}
+                    variant={"success"} 
+                    onClick={() => handleAdd()}
+                    aria-controls="addFormCollapse"
+                    aria-expanded={add}
+                    style ={{"fontWeight":"bold"}}
+                    >+ New Ingredient</Button>
+                    {
+                        showForm()
+                    }
+                    <Table  striped bordered hover responsive size={isMobile ? "sm":""} >
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>{isMobile ? "#":"Amount"}</th>
+                            <th>Unit</th>
+                            <th>{isMobile ? "Exp. Date":"Expiration Date"}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {
-                            showForm()
-                        }
-                        <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Amount</th>
-                                <th>Unit</th>
-                                <th>Expiration Date</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                storage && storage.map((item) => {
-                                    //return(renderItem({...storage[item],id:item}, item))
-                                    return(renderItem(item, null))
-                                })
-                            }    
-                        </tbody>   
-                            </Table>                
-                    </Col>          
-                </Row>          
-                </Container>
-            }
-        </Container>
+                            storage && storage.map((item) => {
+                                //return(renderItem({...storage[item],id:item}, item))
+                                return(renderItem(item, null))
+                            })
+                        }    
+                    </tbody>   
+                        </Table>                
+                </Col>          
+            </Row>          
+            </Container>
+         
     )      
 }
 

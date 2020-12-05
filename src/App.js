@@ -17,9 +17,9 @@ function App() {
     <BrowserRouter>
     <NikoNav></NikoNav>
     <Switch>
+      <Route path='/SignIn' component={NikoSignIn} />
       <Route path = "/Storage" component={StorageBoard}/>
       <Route path='/SignIn' component={NikoSignIn} />
-      
       <Route path='/Menu' component={Menu} />
       {/*<Route path='/Recipes' component={Recipes} />*/}
       <Route path='/Home' component={Home} />
