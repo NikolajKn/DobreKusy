@@ -13,9 +13,10 @@ import NikoNav from './components/layout/NikoNav'
 import NikoSignIn from './components/auth/NikoSignIn'
 
 function App() {
+
   return (
     <BrowserRouter>
-    <NikoNav></NikoNav>
+    <NikoNav ></NikoNav>
     <Switch>
       <Route path='/SignIn' component={NikoSignIn} />
       <Route path = "/Storage" component={StorageBoard}/>
@@ -23,11 +24,12 @@ function App() {
       <Route path='/Menu' component={Menu} />
       {/*<Route path='/Recipes' component={Recipes} />*/}
       <Route path='/Home' component={Home} />
-      <Route exact path = "/" component={Home}/>
-      
+      <Route exact path = "/" component={Home}/> 
     </Switch>
     </BrowserRouter>
   );
 }
+
+
 
 export default App;

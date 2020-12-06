@@ -7,8 +7,9 @@ import {withRouter} from "react-router-dom"
 
 const NikoNav = (props) => {
     var user = firebase.auth().currentUser
-    console.log(props.location)
+
     return (
+        props.auth.isLoaded ?
         <Navbar bg="dark" variant= "dark" expand="lg" >
             <Navbar.Brand href="Home" className ="font-weight-bold pr-3" style={{"fontSize": "1.5em"}}>
                 <Row><div >Stora</div><div style={{"color":" #069697"}}>g</div><div>eMaster</div></Row>  
@@ -46,6 +47,8 @@ const NikoNav = (props) => {
                 }
 
         </Navbar>
+        :
+        null
 
   )
 }
