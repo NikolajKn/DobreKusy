@@ -16,8 +16,8 @@ const MenuModal = (props) => {
     var selectedRecipe = "";
     var newMenu = props.menu1.newMenu
 
-    console.log("OKKK")
-    console.log(newMenu)
+    
+    
 
     const setRecipe = (recipe) => {selectedRecipe = recipe}
 
@@ -52,6 +52,8 @@ const MenuModal = (props) => {
                       var rec = []
                       if(props.day == "monday"){
                         rec = props.menu1.newMenu.monday
+                        console.log("MONDAY")
+                        console.log(props.menu1.newMenu.monday)
                         rec.push({recipe:selectedRecipe,portions:"5"})
                         newMenu.monday = rec
                       } else if(props.day == "tuesday"){
@@ -71,7 +73,7 @@ const MenuModal = (props) => {
                         rec.push({recipe:selectedRecipe,portions:"5"})
                         newMenu.friday = rec
                       }
-                      console.log(newMenu)
+                      
                       props.setNewMenu(newMenu)
                       handleClose()}
                     } 

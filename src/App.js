@@ -11,6 +11,7 @@ import SignUp from './components/auth/SignUp'
 //import Recipes from './components/recipes/Recipes'
 import NikoNav from './components/layout/NikoNav'
 import NikoSignIn from './components/auth/NikoSignIn'
+import AllMenuMinimal from "./components/menu/AllMenuMinimal"
 
 function App() {
   return (
@@ -23,8 +24,7 @@ function App() {
       <Route path='/Menu' component={Menu} />
       {/*<Route path='/Recipes' component={Recipes} />*/}
       <Route path='/Home' component={Home} />
-      <Route exact path = "/" component={Home}/>
-      
+      <Route exact path = "/" component={Home}/>      
     </Switch>
     </BrowserRouter>
   );

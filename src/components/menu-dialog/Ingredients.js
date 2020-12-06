@@ -7,6 +7,8 @@ import { firestoreConnect } from "react-redux-firebase";
 
 import {addItem} from "../../store/actions/recipeActions"
 
+import SelectSearch from 'react-select-search'
+
 class Ingredients extends Component{
     
     constructor(props){
@@ -23,31 +25,37 @@ class Ingredients extends Component{
        };
     }
 
+    
+
     componentDidUpdate(prevProps) {
       if(this.props !== prevProps){
-        this.ingredients1 = []
+        var ingredients1 = []
         this.props.storage && Object.keys(this.props.storage).map((ing, index) => 
           {
-            this.ingredients1.push(this.props.storage[ing].name)
+            ingredients1.push(this.props.storage[ing].name)
           }  
         )      
-        this.expiration1 = []
+        var expiration1 = []
         this.props.storage && Object.keys(this.props.storage).map((ing, index) => {
               var itemDate = new Date(this.props.storage[ing].expirationDate.seconds*1000)
               var currentDate = new Date(Date.now())
               var dateDiff =  Math.floor(( itemDate - currentDate ) / 86400000);  
               if(dateDiff <= 7){
-                this.expiration1.push(this.props.storage[ing].name)
+                expiration1.push(this.props.storage[ing].name)
               }
           }  
         )
+        if(this.state.checked.length == 0){
+        
         var chec = []
-        for(let i = 0; i < this.expiration1.length; i++){
+        for(let i = 0; i < expiration1.length; i++){
           chec.push(-1)
         }
         this.setState({checked:chec})
-        this.setState({ingredients:this.ingredients1})
-        this.setState({expiration:this.expiration1})
+      }
+
+        this.setState({ingredients:ingredients1})
+        this.setState({expiration:expiration1})
       }
     }
 
@@ -56,6 +64,8 @@ class Ingredients extends Component{
         newFilterText["t"+this.state.ind]=""
         this.setState({filterText:newFilterText})
         this.setState({ind:this.state.ind+1})
+        this.applyFilter()
+        
         
       }
 
@@ -65,24 +75,34 @@ class Ingredients extends Component{
         var newFilterText = this.state.filterText;
         delete newFilterText[index];
         this.setState({filterText:newFilterText})
+        this.applyFilter()
         
       }
 
       onChangeCheckbox = (e) =>{
         var index = e.target.id.replace("e","")
+        
+        
         if(this.state.checked[index]==-1){
-          this.state.checked[index]=0
+          var newChecked = this.state.checked
+          newChecked[index]=0
+          this.setState({checked:newChecked})
 
-        var newFilter = this.state.filterBox
-        newFilter.push(this.state.expiration[index])
+        var newFilterBox = this.state.filterBox
+        newFilterBox.push(this.state.expiration[index])
         this.setState({filter:newFilter})
 
         }
         else{
-          this.state.checked[index]=-1
+          
+          var newChecked = this.state.checked
+          newChecked[index]=-1
+          this.setState({checked:newChecked})
           var newFilter = this.state.filterBox.filter(item => item !== this.state.expiration[index])
           this.setState({filter: newFilter});
         }
+        
+        this.applyFilter()
       }
 
   
@@ -93,6 +113,9 @@ class Ingredients extends Component{
         var newFilterText = this.state.filterText;
         newFilterText[name] = val
         this.setState({filterText:newFilterText})
+        this.applyFilter()
+        
+        console.log(event.target.value)
   
       }
 
@@ -104,15 +127,45 @@ class Ingredients extends Component{
       
 
       onChangeTextType = (value) =>{
-
+       
         
         var name = this.state.current;
-        var val = value;
+        var val = value[0];
         var newFilterText = this.state.filterText;
         newFilterText[name] = val
         this.setState({filterText:newFilterText})
+        if(this.state.ingredients.indexOf(val)>-1){
+        this.applyFilter()
+        }
+       
+        
+        
         
       }
+
+      applyFilter=()=> {
+        
+        var arrayFilter = []
+        for(let i = 0; i < this.state.checked.length; i++){
+          if(this.state.checked[i] == 0){
+            arrayFilter.push(this.state.expiration[i])
+          }
+        }
+        for (const [key, value] of Object.entries(this.state.filterText)) {
+          
+            if(value != ""){
+            arrayFilter.push(value);
+            
+          }
+        }
+        
+        
+        
+        
+        this.props.setNewFilter(arrayFilter)
+      
+      }
+
       
 
     render(){
@@ -121,22 +174,7 @@ class Ingredients extends Component{
               <Card.Header style={{ backgroundColor: '#64697A', color:'white'}}> 
               <h4 className="float-left" style={{width:"50%"}}>Select ingredients for recipe:</h4>
               <div className="float-right" style={{width:"50%"}}>
-              <Button  className="float-right" variant="success" onClick={(e)=> {
-                              var arrayFilter = this.props.menuState.filterIngredients
-                              for(let i = 0; i < this.state.checked.length; i++){
-                                if(this.state.checked[i] == 0){
-                                  arrayFilter.push(this.state.expiration[i])
-                                }
-                              }
-                              for (const [key, value] of Object.entries(this.state.filterText)) {
-                                if(Array.isArray(value)){
-                                  arrayFilter.push(value[0]);
-                                } else {
-                                  arrayFilter.push(value);
-                                }
-                              }
-                              this.props.setNewFilter(arrayFilter)
-                            }}>Apply filter</Button>
+              
               </div>
               </Card.Header>
   
@@ -155,9 +193,10 @@ class Ingredients extends Component{
                           id = {"typeahead"+k}
                           positionFixed 
                           inputProps={{id: k}}
-                          onInputChange = {this.onInputChangeTextType}
+                          
                           onFocus = {this.onFocusTextType}
                           onChange = {this.onChangeTextType}
+                          onInputChange = {this.onInputChangeTextType}
                           placeholder = {"Search ingredient"}
                           
                           
@@ -193,6 +232,12 @@ class Ingredients extends Component{
             ) }
   
   </div>
+
+
+  
+
+
+    
               </Card.Body>
             </Card>
   

@@ -3,28 +3,15 @@ import {Container, Row, Button, Col} from "react-bootstrap"
 import PlusMinusButton from './commonElements/PlusMinusButton'
 import MenuModal from "../menu-dialog/MenuModal"
 import { connect } from "react-redux"
-import {fetchAllMenu} from "../../store/actions/menuActions"
 import {compose} from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 class OneDayMenuCard extends Component {
 
     constructor(props){
         super(props);
-        console.log(this.props.recipes)
         var recipes1 = this.props.recipes
         this.state = {recipes:recipes1}
-        console.log(this.state)
     }
-
-    handleClick2 = (e) => {
-
-        var index = "t"+e.target.id.replace("b","");
-        var newFilterText = this.state.filterText;
-        delete newFilterText[index];
-        this.setState({filterText:newFilterText})
-        console.log(this.state.filterText)
-        
-      }
 
     render(){
         var recipes = [];
@@ -41,7 +28,7 @@ class OneDayMenuCard extends Component {
         }
 
         return(
-            <Container className="recipeInMenu">
+            <Container className="recipeInMenu" as={"article"}>
                 <Row>
                     <MenuModal day={this.props.day} number="1" /*add={this.addRecipe}*/ />
                 </Row>
@@ -68,6 +55,7 @@ class OneDayMenuCard extends Component {
                             this.props.setNewMenu(newMenu)
                         }}> X </Button></Col>
                             <Col sm={7}><p style={{color:"black"}}>{this.props.recipes1[recipe1.recipe].name}</p></Col>
+                            <Col sm={4.5}><PlusMinusButton day={this.props.day} index={index} oldMenu={this.props.menu1.newMenu} setNewMenu={this.props.setNewMenu.bind(this)} /></Col>
                         </Row>
                         : null
                         
@@ -106,6 +94,3 @@ export default compose(
     connect(mapStateToProps,mapDispatchToProps),
     firestoreConnect([{collection:"menu", orderBy:["state","desc"]},{collection:"recipes"}])
 )(OneDayMenuCard)
-/*
-<Col sm={4.5}><PlusMinusButton /></Col>
-*/

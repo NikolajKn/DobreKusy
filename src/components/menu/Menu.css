@@ -34,6 +34,7 @@
     font-size: 0.9em;
     text-align: center;
     font-style: italic;
+    padding: 1%;
     /*background-color: #bbbfca;*/
   }
 
@@ -231,6 +232,15 @@ ul:nth-of-type(1) li {
   font-size: 5em;
 }
 
+.nameMenu{
+  font-size: 1.5em;
+  font-weight: 550;
+  color: black;
+  cursor:pointer;
+  margin-left: 2%;
+
+}
+
 .btnNameMenu {
   font-size: 1.5em;
   font-weight: 550;
@@ -264,4 +274,8 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.bootstrap-datetimepicker-widget .datepicker-days table tbody tr:hover {
+  background-color: #eee;
 }

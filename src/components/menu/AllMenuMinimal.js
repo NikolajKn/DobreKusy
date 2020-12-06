@@ -1,29 +1,35 @@
 import React, {Component} from 'react'
-import {Row} from "react-bootstrap"
+import {Row, Col} from "react-bootstrap"
 import CreatingMenu from './CreatingMenu'
 import AllMenuCards from './AllMenuCards';
+import { useMediaQuery } from 'react-responsive'
 
-class AllMenuMinimal extends Component{
+const AllMenuMinimal = (props) => {
 
-    constructor(props){
-        super(props);
-    }
+    const isMobile = useMediaQuery({ query: '(max-width: 760px)' })
 
-    render(){
         var allMenu = JSON.parse(localStorage.getItem("allMenu"));
         var recipes = JSON.parse(localStorage.getItem("recipes"));
-        return(
-            <Row>
-                <div className="col-2 vl">
-                    <AllMenuCards numCol={12} allMenu={allMenu} sidebar={true} />
-                </div>
-                <div className="col-9">
-                    <CreatingMenu recipes={recipes}/>
-                </div>
-            </Row>
+        console.log("IS MOBILE")
+        console.log(isMobile)
+        if(!isMobile){
+            return(
+                <Row>
+                    <Col sm={2} as={"aside"}>
+                        <AllMenuCards numCol={12} allMenu={allMenu} sidebar={true} />
+                    </Col>
+                    <Col sm={9} as={"section"}>
+                        <CreatingMenu recipes={recipes}/>
+                    </Col>
+                </Row>
+    
+            )
+        } else{
+            return(
+                <CreatingMenu recipes={recipes}/>
+            )
+        }
 
-        )
-    }
 }
 
 export default AllMenuMinimal

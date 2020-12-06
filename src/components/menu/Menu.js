@@ -20,9 +20,9 @@ class Menu extends Component{
                 this.props.menu1.minimal ? 
                 <AllMenuMinimal/>
                 : 
-                <Container>
+                <Container as={"section"}>
                     <h1>All menu</h1>
-                    <Button variant="success" className="buttonAddMenu" onClick={() => this.props.setMinimal(true)}> + New menu</Button>
+                    <Button variant="success" className="buttonAddMenu" style={{margin:"0%"}} onClick={() => {this.props.setMinimal(true)}}> + New menu</Button>
                     <AllMenuCards numCol="6"/>
                 </Container>
             )

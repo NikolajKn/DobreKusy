@@ -19,6 +19,7 @@ const initState = {
 }
 
 const menuReducer=(state=initState, action) => {
+    console.log(state)
     switch(action.type){
         case "SEND_REQUEST":
             return {
@@ -70,6 +71,7 @@ const menuReducer=(state=initState, action) => {
             }
 
         case "SET_ACTUAL_MENU":
+            console.log(state)
             return {
                 ...state,
                 loading: false, 

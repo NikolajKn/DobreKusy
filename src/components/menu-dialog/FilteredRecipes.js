@@ -11,7 +11,7 @@ class FilteredRecipes extends Component{
 
     constructor(props){
         super(props);
-        console.log(this.props.recipes)
+        
         var recipes1ID = []
         this.props.recipes && Object.keys(this.props.recipes).map((recipe, index) => 
             recipes1ID.push(recipe)
@@ -33,7 +33,7 @@ class FilteredRecipes extends Component{
 
     onChangeRadio = (e) =>{
         var newSelected = e.target.dataset.recipe;
-        console.log(e.target.dataset.recipe);
+       
         this.setState({selected:newSelected});
         var newSelectedRadioId = e.target.id;
         this.setState({selectedRadioId:newSelectedRadioId});
@@ -50,7 +50,7 @@ class FilteredRecipes extends Component{
         this.setState({search:newSearch});
 
         var newSelected = "";
-        console.log(e.target.dataset.recipe);
+        
         this.setState({selected:newSelected});
         var newSelectedRadioId = null;
         this.setState({selectedRadioId:newSelectedRadioId});
@@ -59,6 +59,7 @@ class FilteredRecipes extends Component{
 
     render(){
         var filterRecipes = []
+        //console.log(this.props.menuState.filterIngredients)
         if(this.props.menuState.filterIngredients.length == 0){
             filterRecipes = this.state.recipes
         } else{
@@ -66,15 +67,15 @@ class FilteredRecipes extends Component{
             for(let i = 0; i < this.state.recipesID.length; i++){
                 var name = this.props.recipes[this.state.recipesID[i]].name
                 var recipeIngredients = []
-                console.log(this.props.recipes[this.state.recipesID[i]].ingredients)
+           
                 for(let j = 0; j < this.props.recipes[this.state.recipesID[i]].ingredients.length; j++){
                     if(this.props.recipes[this.state.recipesID[i]].ingredients[j]){
-                        recipeIngredients.push(this.props.recipes[this.state.recipesID[i]].ingredients[j].name)
+                        recipeIngredients.push(this.props.recipes[this.state.recipesID[i]].ingredients[j].name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase())
                     }
                 }
                 var correct = true
                 for(let j = 0; j < arrIngr.length; j++){
-                    if(!recipeIngredients.includes(arrIngr[j])){
+                    if(!recipeIngredients.includes(arrIngr[j].normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase())){
                         correct = false
                     }
                 }
@@ -120,6 +121,9 @@ class FilteredRecipes extends Component{
                     />
                       )}
             
+
+                     
+
             </Card.Body>
           </Card>
 

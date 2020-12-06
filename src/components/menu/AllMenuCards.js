@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
-import {Col, Row, Container, Button} from "react-bootstrap"
+import {Spinner} from "react-bootstrap"
 import MenuCard from "./MenuCard"
 import { connect } from "react-redux"
-import {fetchAllMenu} from "../../store/actions/menuActions"
 import {compose} from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 
@@ -13,8 +12,12 @@ class AllMenuCards extends Component{
     }
 
     render(){
-        return(
-                <Container>
+        if(!this.props.menu){
+            return <article style={{textAlign:"center"}}><Spinner animation="border" /></article>
+        } else{
+            console.log(this.props.menu)
+            return(
+                <>
                     {this.props.menu && Object.keys(this.props.menu).map((menu1, index) => 
                         <article key={index}>
                         {
@@ -26,8 +29,9 @@ class AllMenuCards extends Component{
                         }
                         </article>
                     )}
-                </Container>
+                </>
             )
+        }
         }
 }
 
@@ -38,15 +42,8 @@ const mapStateToProps = (state, props) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchAllMenu: () => dispatch(fetchAllMenu()),
-    }
-}
-
-
 export default compose(
-    connect(mapStateToProps,mapDispatchToProps),
+    connect(mapStateToProps,null),
     firestoreConnect([{collection:"menu", orderBy:["state","desc"]}])
 )(AllMenuCards)
 
