@@ -9,23 +9,36 @@ import './Menu.css';
 import { firestoreConnect } from "react-redux-firebase";
 import { useMediaQuery } from 'react-responsive'
 
+import {Helmet} from "react-helmet"
+
 const Menu = (props) => {
 
     const isSmall = useMediaQuery({ query: '(max-width: 1000px)' });
 
         if(!props.menu1.actualMenu){
-            return(
+            return(   
                 props.menu1.minimal ? 
-                <AllMenuMinimal isSmall={isSmall}/>
+                <AllMenuMinimal isSmall={isSmall}>
+                    <Helmet>
+                    <title>Menu</title>
+                </Helmet>
+                </AllMenuMinimal>
                 : 
                 <Container as={"section"}>
+                    <Helmet>
+                    <title>Menu</title>
+                </Helmet>
                     <h1>All menu</h1>
                     <Button variant="success" className="buttonAddMenu" style={{margin:"0%"}} onClick={() => {props.setMinimal(true)}}> + New menu</Button>
                     <AllMenuCards numCol="6" isSmall={isSmall}/>
                 </Container>
             )
         } else {
-            return <MenuDetailSelection index={props.menu1.actualMenu} />
+            return <MenuDetailSelection index={props.menu1.actualMenu} >
+                <Helmet>
+                    <title>Menu</title>
+                </Helmet>
+            </MenuDetailSelection>
         }
 }
 

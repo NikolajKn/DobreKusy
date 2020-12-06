@@ -8,6 +8,7 @@ import {addItem} from "../../store/actions/storageActions"
 import StorageItem from "./StorageItem"
 import { useMediaQuery } from 'react-responsive'
 
+import {Helmet} from "react-helmet";
 
 const StorageBoard = (props) => {
     var {addItem,storage} = props
@@ -132,6 +133,7 @@ const StorageBoard = (props) => {
         )
     }
       
+
     return(       
         storage===undefined ?
             <Container className="text-center justify-content-center">
@@ -139,7 +141,9 @@ const StorageBoard = (props) => {
             </Container>
             :
             <Container as="section" className={isMobile ? "p-0":""}>
-            
+            <Helmet>
+                <title>Storage</title>
+            </Helmet>
             <Row className={isMobile ? "m-0":""} style={{height : "20px"}}/>
             
             <Row className={isMobile ? "justify-content-center m-0":"justify-content-center"} >            

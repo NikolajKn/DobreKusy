@@ -9,6 +9,7 @@ import { useState } from "react";
 import HomeItem from "./HomeItem"
 import Menu from "./MenuItem";
 import './styles.css'
+import {Helmet} from "react-helmet"
 
 var mili = Date.now() +(86400*7*1000)
 var currentDate = new Date(mili) 
@@ -58,6 +59,9 @@ const Home = (props) => {
 
         return(       
         <Container fluid>
+            <Helmet>
+                <title>Home</title>
+            </Helmet>
             {
                 men===undefined ?
                 
