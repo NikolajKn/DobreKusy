@@ -14,7 +14,7 @@ const AllMenuMinimal = (props) => {
             return(
                 <Row style={{marginLeft:"0%", marginRight:"0%"}}>
                     <Col sm={2} as={"aside"}>
-                        <AllMenuCards numCol={12} allMenu={allMenu} sidebar={true} />
+                        <AllMenuCards numCol={12} allMenu={allMenu} sidebar={true} isSmall={isSmall} />
                     </Col>
                     <Col sm={9} as={"section"}>
                         <CreatingMenu recipes={recipes} isSmall={isSmall}/>

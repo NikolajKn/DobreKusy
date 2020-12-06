@@ -60,7 +60,7 @@ class FilteredRecipes extends Component {
 
     render() {
         var filterRecipes = []
-        //console.log(this.props.menuState.filterIngredients)
+
         if (this.props.menuState.filterIngredients.length == 0) {
             filterRecipes = this.state.recipes
         } else {
@@ -87,118 +87,56 @@ class FilteredRecipes extends Component {
         }
         return (
 
-            <div>
-                <MyScreenMax onChange={handleMediaQueryChange}>
-                    <Card as="section" style={{ overflow: "auto", height: "60vh", borderColor: "#069697" }}
 
 
-                    >
-                        <Card.Header as="header" style={{ color: "white", backgroundColor: "#069697" }}>
+            <Card as="section" style={!this.props.isSmall ? { height: "60vh", borderColor: "#069697" } :
+                { height: "30vh", borderColor: "#069697", marginTop: "5%", marginLeft: "5%", marginRight: "5%" }}
 
-                            <h4 className="float-left" style={{ width: "50%" }}>Found recipes:</h4>
-                            <Form.Control
-                                className="float-right" style={{ width: "50%" }}
-                                type="text"
-                                placeholder="Search recipe"
-                                id="filterRecipe"
-                                onChange={this.onChangeSearch}
+
+            >
+                <Card.Header as="header" style={{ color: "white", backgroundColor: "#069697" }}>
+
+                    <h4 className="float-left" style={{ width: "50%" }}>Found recipes:</h4>
+                    <Form.Control
+                        className="float-right" style={{ width: "50%" }}
+                        type="text"
+                        placeholder="Search recipe"
+                        id="filterRecipe"
+                        onChange={this.onChangeSearch}
+                    />
+                </Card.Header>
+                <Card.Body style={{ overflow: "auto"}}
+                >
+
+                    {
+                        filterRecipes.filter((data) => {
+                            if (this.state.search == null)
+                                return data
+                            else if (data.toLowerCase().includes(this.state.search.toLowerCase())) {
+                                return data
+                            }
+                        }).map((recipe, index) =>
+                            <Form.Check
+                                key={index}
+                                type="radio"
+                                label={recipe}
+                                id={"r" + index}
+                                checked={this.state.selectedRadioId === "r" + index}
+                                name="recipe"
+                                data-recipe={recipe}
+                                onChange={this.onChangeRadio}
+                                style={{ fontSize: "20px" }}
                             />
-                        </Card.Header>
-                        <Card.Body >
+                        )}
 
-                            {
-                                filterRecipes.filter((data) => {
-                                    if (this.state.search == null)
-                                        return data
-                                    else if (data.toLowerCase().includes(this.state.search.toLowerCase())) {
-                                        return data
-                                    }
-                                }).map((recipe, index) =>
-                                    <Form.Check
-                                        key={index}
-                                        type="radio"
-                                        label={recipe}
-                                        id={"r" + index}
-                                        checked={this.state.selectedRadioId === "r" + index}
-                                        name="recipe"
-                                        data-recipe={recipe}
-                                        onChange={this.onChangeRadio}
-                                        style={{ fontSize: "20px" }}
-                                    />
-                                )}
+                </Card.Body>
+            </Card>
 
-
-
-
-                        </Card.Body>
-                    </Card>
-                </MyScreenMax>
-
-
-
-
-                <MyScreenMid onChange={handleMediaQueryChange}>
-                    <Card as="section" style={{ height: "30vh", borderColor: "#069697", margin: "5%" }}
-
-
-                    >
-                        <Card.Header as="header" style={{ color: "white", backgroundColor: "#069697" }}>
-
-                            <h4 className="float-left" style={{ width: "50%" }}>Found recipes:</h4>
-                            <Form.Control
-                                className="float-right" style={{ width: "50%" }}
-                                type="text"
-                                placeholder="Search recipe"
-                                id="filterRecipe"
-                                onChange={this.onChangeSearch}
-                            />
-                        </Card.Header>
-                        <Card.Body style={{ overflow: "auto" }}>
-
-                            {
-                                filterRecipes.filter((data) => {
-                                    if (this.state.search == null)
-                                        return data
-                                    else if (data.toLowerCase().includes(this.state.search.toLowerCase())) {
-                                        return data
-                                    }
-                                }).map((recipe, index) =>
-                                    <Form.Check
-                                        key={index}
-                                        type="radio"
-                                        label={recipe}
-                                        id={"r" + index}
-                                        checked={this.state.selectedRadioId === "r" + index}
-                                        name="recipe"
-                                        data-recipe={recipe}
-                                        onChange={this.onChangeRadio}
-                                        style={{ fontSize: "20px" }}
-                                    />
-                                )}
-
-
-
-
-                        </Card.Body>
-                    </Card>
-                </MyScreenMid>
-            </div>
 
         )
     }
 }
-const handleMediaQueryChange = (matches) => {
-    console.log("afasf")
-}
 
-const MyScreenMid = ({ children }) => {
-    const isDesktop = useMediaQuery({ maxWidth: 1200 })
-    return isDesktop ? children : null
-}
-const MyScreenMax = ({ children }) => {
-    const isDesktop = useMediaQuery({ minWidth: 1200 })
-    return isDesktop ? children : null
-}
 
 const mapStateToProps = (state, props) => {
     return {

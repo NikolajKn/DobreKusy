@@ -7,7 +7,7 @@ const AlertAfterAction = (props) => {
 
     if (show) {
       return (
-        <Alert variant={props.variant} onClose={() => props.setting(false)} dismissible>
+        <Alert variant={props.variant} style={{marginTop:"3%"}}>
           <p style={{fontWeight:"bold", fontSize:"150%"}}>
             {props.text}
           </p>

@@ -9,6 +9,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import {addItem, editItem} from "../../store/actions/menuActions"
 
 
+
 class CreatingMenu extends Component {
 
     constructor(props) {
@@ -36,7 +37,7 @@ class CreatingMenu extends Component {
         this.newMenu[day] = array
     }
 
-    handleClick = (e) => {
+    handleClick5 = (e) => {
         e.preventDefault();
         var day = e.nativeEvent.target.hash;
         day = day.replace("#", "");
@@ -57,37 +58,47 @@ class CreatingMenu extends Component {
             this.props.addItem(newMenu)
         }
         this.props.setMinimal(false)
-        //window.location.reload(false)
+        this.props.setNewMenu({
+            author: "tester",
+            creatingDate: "",
+            date: "",
+            state: "2",
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [],
+            friday: []
+        })
     }
 
     render() {
         return (
             this.state.save ? <Menu />
                 :
-                <>
+                <div ref={node => this.node = node}>
                     {
                         this.props.update ? <h1 style={{ margin: "5%" }}>Update menu</h1>
                         : <h1 style={{ margin: "5%" }}>Create new menu</h1>
                     } 
-                    <Card className="creatingCard" as={"article"}  style={this.props.isSmall ?{margin:"2%"}:null}>
+                    <Card className="creatingCard" as={"article"}  style={this.props.isSmall ?{margin:"2%"}:null} >
                         <Card.Header as={"header"}>
                             <Button variant="success" style={{ width: "25%" }} className="buttonAddMenu" onClick={() => { this.saveMenu() }}> Save </Button>
 
                             <Nav variant="tabs" defaultActiveKey="#0" className="creatingMenuTab" as={"nav"}>
                                 <Nav.Item>
-                                    <Nav.Link as={"a"} onClick={this.handleClick.bind(this)} href="#0" className="creatingMenuTabLink" >Monday</Nav.Link>
+                                    <Nav.Link as={"a"} onClick={this.handleClick5.bind(this)} href="#0" className="creatingMenuTabLink" >Monday</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
-                                    <Nav.Link as={"a"} onClick={this.handleClick.bind(this)} href="#1" className="creatingMenuTabLink">Tuesday</Nav.Link>
+                                    <Nav.Link as={"a"} onClick={this.handleClick5.bind(this)} href="#1" className="creatingMenuTabLink">Tuesday</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
-                                    <Nav.Link as={"a"} onClick={this.handleClick.bind(this)} href="#2" className="creatingMenuTabLink">Wednesday</Nav.Link>
+                                    <Nav.Link as={"a"} onClick={this.handleClick5.bind(this)} href="#2" className="creatingMenuTabLink">Wednesday</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
-                                    <Nav.Link as={"a"} onClick={this.handleClick.bind(this)} href="#3" className="creatingMenuTabLink">Thursday</Nav.Link>
+                                    <Nav.Link as={"a"} onClick={this.handleClick5.bind(this)} href="#3" className="creatingMenuTabLink">Thursday</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
-                                    <Nav.Link  as={"a"} onClick={this.handleClick.bind(this)} href="#4" className="creatingMenuTabLink">Friday</Nav.Link>
+                                    <Nav.Link  as={"a"} onClick={this.handleClick5.bind(this)} href="#4" className="creatingMenuTabLink">Friday</Nav.Link>
                                 </Nav.Item>
                             </Nav>
                         </Card.Header>
@@ -104,7 +115,7 @@ class CreatingMenu extends Component {
 
                         </Card.Body>
                     </Card>
-                </>
+                </div>
 
 
         )
@@ -118,6 +129,13 @@ const setMinimal = (minimal) => {
     }
 }
 
+const setNewMenu = (menu) => {
+    return {
+        type: "PUSH_RECIPES", 
+        payload: menu
+    }
+}
+
 const mapStateToProps = (state, props) => {
     return {
         menu1: state.menu
@@ -128,7 +146,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addItem: (menu) => dispatch(addItem(menu)), 
         setMinimal: (minimal) => dispatch(setMinimal(minimal)),
-        editItem: (menu, index) => dispatch(editItem(menu, index))
+        editItem: (menu, index) => dispatch(editItem(menu, index)),
+        setNewMenu: (menu) => dispatch(setNewMenu(menu)) 
     }
 }
 

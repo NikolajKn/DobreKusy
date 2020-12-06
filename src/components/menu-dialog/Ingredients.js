@@ -29,7 +29,6 @@ class Ingredients extends Component {
 
 
   componentDidUpdate(prevProps) {
-    console.log("tady")
     if (this.props !== prevProps) {
       var ingredients1 = []
       this.props.storage && Object.keys(this.props.storage).map((ing, index) => {
@@ -116,7 +115,7 @@ class Ingredients extends Component {
     this.setState({ filterText: newFilterText })
     this.applyFilter()
 
-    console.log(event.target.value)
+
 
   }
 
@@ -172,139 +171,63 @@ class Ingredients extends Component {
 
   render() {
     return (
-      <div>
-        <MediaQuery minWidth={1200} onChange={() => { console.log("tatata") }}>
-          <Card as="aside" className="bg-light" style={{ border: "0", overflow: "auto", height: "60vh" }} >
+      <Card as="aside" className="bg-light" style={
+        !this.props.isSmall ?
+          { border: "0", overflow: "auto", height: "60vh" } :
+          { height: "30vh", marginTop: "5%", marginLeft: "5%", marginRight: "5%", border: "#069697 solid 1px" }} >
 
-            <Card.Body >
-              <Button variant="success" onClick={this.handleClick}>+Ingredient</Button>
+        <Card.Body style={{ overflow: "auto" }} >
+          <Button variant="success" onClick={this.handleClick}>+Ingredient</Button>
 
-              {
-                Object.entries(this.state.filterText).reverse().map(([k, v]) => (
-                  <div key={k}>
+          {
+            Object.entries(this.state.filterText).reverse().map(([k, v]) => (
+              <div key={k}>
 
-                    <Typeahead
-                      className="float-left"
-                      style={{ marginTop: "10px", width: "70%" }}
-                      options={this.state.ingredients}
-                      id={"typeahead" + k}
-                      positionFixed
-                      inputProps={{ id: k }}
-
-
-                      onFocus={this.onFocusTextType}
-                      onChange={this.onChangeTextType}
-                      onInputChange={this.onInputChangeTextType}
-                      placeholder={"Search ingredient"}
+                <Typeahead
+                  className="float-left"
+                  style={{ marginTop: "10px", width: "70%" }}
+                  options={this.state.ingredients}
+                  id={"typeahead" + k}
+                  positionFixed
+                  inputProps={{ id: k }}
 
 
-                    />
+                  onFocus={this.onFocusTextType}
+                  onChange={this.onChangeTextType}
+                  onInputChange={this.onInputChangeTextType}
+                  placeholder={"Search ingredient"}
 
-
-                    <Button
-                      className="float-right"
-                      className="rounded-circle"
-                      variant="danger"
-                      id={"b" + k.replace("t", "")}
-                      style={{ marginTop: "10px", marginLeft: "10px", fontWeight: "bold" }}
-                      onClick={this.handleClick2}>x</Button>
-                  </div>
-
-
-
-
-                ))}
-
-              <h2 style={{ fontSize: "18px", marginLeft: "0", marginRight: "0", fontWeight: "bold" }}>Close to expiration date:</h2>
-              <div style={{ marginTop: "10px" }}>
-                {this.state.expiration.map((value, index) =>
-                  <Form.Check
-                    key={index}
-                    type="checkbox"
-                    label={value}
-                    name="formHorizontalRadios"
-                    id={"e" + index}
-                    onChange={this.onChangeCheckbox}
-                    style={{ color: "red", fontSize: "18px" }}
-                  />
-                )}
-
+                />
+                <Button
+                  className="float-right"
+                  className="rounded-circle"
+                  variant="danger"
+                  id={"b" + k.replace("t", "")}
+                  style={{ marginTop: "10px", marginLeft: "10px", fontWeight: "bold" }}
+                  onClick={this.handleClick2}>x</Button>
               </div>
 
+            ))}
 
+          <h2 style={{ fontSize: "18px", margin: " 5px 0 5px 0", fontWeight: "bold" }}>Close to expiration date:</h2>
+          <div style={{ marginTop: "10px" }}>
+            {this.state.expiration.map((value, index) =>
+              <Form.Check
+                key={index}
+                type="checkbox"
+                label={value}
+                name="formHorizontalRadios"
+                id={"e" + index}
+                onChange={this.onChangeCheckbox}
+                style={{ color: "red", fontSize: "18px" }}
+              />
+            )}
 
+          </div>
 
+        </Card.Body>
+      </Card>
 
-
-            </Card.Body>
-          </Card>
-        </MediaQuery>
-
-        <MediaQuery maxWidth={1200} >
-          <Card as="aside" className="bg-light" style={{ border: "0", overflow: "auto", height: "30vh", margin: "5%", border: "#069697 solid 1px" }} >
-
-            <Card.Body >
-              <Button variant="success" onClick={this.handleClick}>+Ingredient</Button>
-
-              {
-                Object.entries(this.state.filterText).reverse().map(([k, v]) => (
-                  <div key={k}>
-
-                    <Typeahead
-                      className="float-left"
-                      style={{ marginTop: "10px", width: "70%" }}
-                      options={this.state.ingredients}
-                      id={"typeahead" + k}
-                      positionFixed
-                      inputProps={{ id: k }}
-
-
-                      onFocus={this.onFocusTextType}
-                      onChange={this.onChangeTextType}
-                      onInputChange={this.onInputChangeTextType}
-                      placeholder={"Search ingredient"}
-
-
-                    />
-
-
-                    <Button
-                      className="float-right"
-                      className="rounded-circle"
-                      variant="danger"
-                      id={"b" + k.replace("t", "")}
-                      style={{ marginTop: "10px", marginLeft: "10px", fontWeight: "bold" }}
-                      onClick={this.handleClick2}>x</Button>
-                  </div>
-
-
-
-
-                ))}
-
-              <h2 style={{ fontSize: "18px", marginLeft: "0", marginRight: "0", fontWeight: "bold" }}>Close to expiration date:</h2>
-              <div style={{ marginTop: "10px" }}>
-                {this.state.expiration.map((value, index) =>
-                  <Form.Check
-                    key={index}
-                    type="checkbox"
-                    label={value}
-                    name="formHorizontalRadios"
-                    id={"e" + index}
-                    onChange={this.onChangeCheckbox}
-                    style={{ color: "red", fontSize: "18px" }}
-                  />
-                )}
-
-              </div>
-
-
-
-
-            </Card.Body>
-          </Card>
-        </MediaQuery>
-      </div>
 
 
     )
@@ -316,16 +239,6 @@ class Ingredients extends Component {
 
 }
 
-
-
-const MyScreenMid = ({ children }) => {
-  const isDesktop = useMediaQuery({ maxWidth: 1200 }, undefined, this.handleMediaQueryChange)
-  return isDesktop ? children : null
-}
-const MyScreenMax = ({ children }) => {
-  const isDesktop = useMediaQuery({ minWidth: 1200 }, undefined, this.handleMediaQueryChange)
-  return isDesktop ? children : null
-}
 
 const setNewFilter = (filter) => {
   return {

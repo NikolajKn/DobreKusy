@@ -72,4 +72,10 @@ input[type=number] {
       color: #069697
   }
 
+  .my-modal-small {
+    width: 90vw;    /* Occupy the 90% of the screen width */
+    max-width: 90vw;
+    height: 90vh;
+    max-height: 90vh;
+} 
   
