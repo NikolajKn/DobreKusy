@@ -136,19 +136,27 @@ class MenuDetail extends Component {
         }
         var neededIngredients = this.getNeededIngredients() 
 
-        if(this.state.editing){            
-            return             <Row>
-                                <Col sm={2} as={"aside"}>
-                                    <AllMenuCards numCol={12} allMenu={JSON.parse(localStorage.getItem("allMenu"))} sidebar={true} />
-                                </Col>
-                                <Col sm={9} as={"section"}>
-                                    <CreatingMenu update={true} />
-                                </Col>
-                            </Row>
+        if(this.state.editing){   
+            if(!this.props.isSmall){
+                return          <Row>
+                <Col sm={2} as={"aside"}>
+                    <AllMenuCards numCol={12} allMenu={JSON.parse(localStorage.getItem("allMenu"))} sidebar={true} />
+                </Col>
+                <Col sm={9} as={"section"}>
+                    <CreatingMenu update={true} isSmall={this.props.isSmall}/>
+                </Col>
+                </Row>
             } else{
+                return <CreatingMenu update={true} isSmall={this.props.isSmall}/>
+
+            }        
+
+        } else{
             return(
-                <Container style={{width:"75%"}} as={"section"}>
-                <Row as={"header"}>
+                <Container style={{width:"75%"}, this.props.isSmall ? {margin:"2%"}:null} as={"section"}>
+                {
+                    !this.props.isSmall ?                 
+                    <Row as={"header"}>
                     <Col sm={9}><h1>
                         { actualMenu ?
                             nameDate
@@ -165,9 +173,26 @@ class MenuDetail extends Component {
                         {tooltipBasic("Needed to buy", imgBasket())}
                     </Col>
                 </Row>
+                :
+                <div as={"header"}>
+                
+                <h1 style={{fontSize:"2.5em"}}>{ actualMenu ? nameDate : null} </h1>
+                <Row>
+                    <Col sm={2} className="repairMenu float-left" onClick={(e)=> this.setState({settingDate:!this.state.settingDate, neededIngredients:false})}>
+                        {tooltipBasic("Set date", <Image src={calendar} className= "calendar" rounded />)}
+                    </Col>
+                    <Col sm={2} className="repairMenu float-left" onClick={()=> this.setState({editing:true})}>
+                        {tooltipBasic("Edit", imgSet())}
+                    </Col>
+                    <Col sm={2} className="repairMenu float-left" onClick={()=> this.setState({settingDate:false, neededIngredients:!this.state.neededIngredients})}>
+                        {tooltipBasic("Needed to buy", imgBasket())}
+                    </Col>
+                </Row>
+                </div>
+                }
                 {this.state.settingDate ? 
                                 <>
-                                <h3>Select week for menu:</h3>
+                                <h3 style={this.props.isSmall ? {marginTop:"5%"}:null}>Select week for menu:</h3>
                                 <Calendar changeDate={this.changeDate.bind(this)} />
                                 <Button variant={"success"} style={{height:"40px"}} onClick={() => {
                                     var oldMenu = {...this.props.menu[this.props.menu1.actualMenu]}
@@ -184,7 +209,7 @@ class MenuDetail extends Component {
 
                             :
                 this.state.neededIngredients ?
-                                <NeededIngredients allIngredients={this.props.storage} ingredientsFromRecipe={neededIngredients} />
+                                <NeededIngredients allIngredients={this.props.storage} ingredientsFromRecipe={neededIngredients} isSmall={this.props.isSmall}/>
                 :
                             null
                         }
@@ -210,7 +235,14 @@ class MenuDetail extends Component {
                                             </ul> 
                                         </Accordion.Collapse>
                                         </Accordion></td>
-                                        <td className="align-middle">{recipe1.portions}x</td></tr>
+                                        {
+                                            this.props.isSmall ? <td className="" style={{fontWeight:"bold"}}>{recipe1.portions}x</td>
+
+                                            :
+                                            <td className="align-middle" style={{fontWeight:"bold"}}>{recipe1.portions}x</td>
+                                        }
+                                        </tr>
+
                             )}
                             </tbody>
                     </Table>            

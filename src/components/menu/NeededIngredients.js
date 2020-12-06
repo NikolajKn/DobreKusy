@@ -94,7 +94,7 @@ class NeededIngredients extends Component{
     render(){
         var buying = this.allNeededIngredients()
         return(
-          <Card variant="light" style={{marginBottom:"5%"}} as={"aside"}>
+          <Card variant="light" style={this.props.isSmall ? {marginTop:"5%", marginBottom:"5%"}:{marginBottom:"5%", width:"50%"}} as={"aside"}>
               <Card.Header style={{fontSize:"200%", fontWeight:"bold", backgroundColor:"#069697", color:"white"}} as={"header"}> 
                 Needed to buy:
               </Card.Header>

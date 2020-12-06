@@ -69,7 +69,7 @@ class CreatingMenu extends Component {
                         this.props.update ? <h1 style={{ margin: "5%" }}>Update menu</h1>
                         : <h1 style={{ margin: "5%" }}>Create new menu</h1>
                     } 
-                    <Card className="creatingCard" as={"article"}>
+                    <Card className="creatingCard" as={"article"}  style={this.props.isSmall ?{margin:"2%"}:null}>
                         <Card.Header as={"header"}>
                             <Button variant="success" style={{ width: "25%" }} className="buttonAddMenu" onClick={() => { this.saveMenu() }}> Save </Button>
 
@@ -95,11 +95,11 @@ class CreatingMenu extends Component {
                             <Card.Title className="creatingCardText" as={"header"}>Selected recipes:</Card.Title>
 
                             {
-                                this.state.index == 0 ? <OneDayMenuCard index={0} day={"monday"} setRecipes={this.setRecipesDay} />
-                                    : this.state.index == 1 ? <OneDayMenuCard index={1} day={"tuesday"} setRecipes={this.setRecipesDay}/>
-                                        : this.state.index == 2 ? <OneDayMenuCard index={2} day={"wednesday"} setRecipes={this.setRecipesDay}/>
-                                            : this.state.index == 3 ? <OneDayMenuCard index={3} day={"thursday"} setRecipes={this.setRecipesDay}/>
-                                                : <OneDayMenuCard index={4} day={"friday"} setRecipes={this.setRecipesDay}/>
+                                this.state.index == 0 ? <OneDayMenuCard index={0} day={"monday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall} />
+                                    : this.state.index == 1 ? <OneDayMenuCard index={1} day={"tuesday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall}/>
+                                        : this.state.index == 2 ? <OneDayMenuCard index={2} day={"wednesday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall}/>
+                                            : this.state.index == 3 ? <OneDayMenuCard index={3} day={"thursday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall}/>
+                                                : <OneDayMenuCard index={4} day={"friday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall}/>
                             }
 
                         </Card.Body>

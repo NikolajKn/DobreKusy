@@ -6,27 +6,24 @@ import { useMediaQuery } from 'react-responsive'
 
 const AllMenuMinimal = (props) => {
 
-    const isMobile = useMediaQuery({ query: '(max-width: 760px)' })
+    const isSmall = useMediaQuery({ query: '(max-width: 1000px)' })
 
         var allMenu = JSON.parse(localStorage.getItem("allMenu"));
         var recipes = JSON.parse(localStorage.getItem("recipes"));
-        console.log("IS MOBILE")
-        console.log(isMobile)
-        if(!isMobile){
+        if(!isSmall){
             return(
-                <Row>
+                <Row style={{marginLeft:"0%", marginRight:"0%"}}>
                     <Col sm={2} as={"aside"}>
                         <AllMenuCards numCol={12} allMenu={allMenu} sidebar={true} />
                     </Col>
                     <Col sm={9} as={"section"}>
-                        <CreatingMenu recipes={recipes}/>
+                        <CreatingMenu recipes={recipes} isSmall={isSmall}/>
                     </Col>
                 </Row>
-    
             )
         } else{
             return(
-                <CreatingMenu recipes={recipes}/>
+                <CreatingMenu recipes={recipes} isSmall={isSmall}/>
             )
         }
 

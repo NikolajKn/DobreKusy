@@ -12,6 +12,7 @@ import SignUp from './components/auth/SignUp'
 import NikoNav from './components/layout/NikoNav'
 import NikoSignIn from './components/auth/NikoSignIn'
 import AllMenuMinimal from "./components/menu/AllMenuMinimal"
+import Footer from "./components/menu-dialog/footer"
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       <Route path='/Home' component={Home} />
       <Route exact path = "/" component={Home}/>      
     </Switch>
+    <Footer></Footer>
     </BrowserRouter>
   );
 }

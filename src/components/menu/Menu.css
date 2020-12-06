@@ -136,10 +136,23 @@ h2 {
   background-color: #069697;
 }
 
+.plusMinusBtn1Small{
+  width:30px;
+  font-size: 1.2em;
+  font-weight: bolder;
+  background-color: #069697;
+}
+
 .plusMinusBtn2{
   width:80px;
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.plusMinusBtn2Small{
+  width:40px;
+  font-size: 1.2em;
+  font-weight: bolder;
 }
 
 .sendBtn1{

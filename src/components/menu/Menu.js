@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Button, Container} from "react-bootstrap"
 import AllMenuCards from "./AllMenuCards"
 import AllMenuMinimal from "./AllMenuMinimal"
-import MenuDetail from "./MenuDetail"
+import MenuDetailSelection from "./MenuDetailSelection"
 import { connect } from "react-redux"
 import {compose} from "redux";
 import './Menu.css';
@@ -27,7 +27,7 @@ class Menu extends Component{
                 </Container>
             )
         } else {
-            return <MenuDetail index={this.props.menu1.actualMenu} />
+            return <MenuDetailSelection index={this.props.menu1.actualMenu} />
         }
     }
 }

@@ -6,11 +6,13 @@ import {connect} from "react-redux";
 import {compose} from "redux";
 import {editItem, deleteItem} from "../../store/actions/menuActions"
 import AlertAfterAction from "./commonElements/AlertAfterAction"
+import { useMediaQuery } from 'react-responsive'
 
 const MenuCard = (props) => {
         
         const [showAlert, setShowAlert] = useState(false);
         const [deleting, setDeleting] = useState(false);
+        const isSmall = useMediaQuery({ query: '(max-width: 1000px)' })
 
         const second5day = 432000;
         var usingDate = props.menu && props.menu.date.seconds
