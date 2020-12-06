@@ -1,6 +1,6 @@
-.ttt{
-    color:red;
-}
+html, body { height: 100% }
+
+
 
 button.close {
     background-color:#dc3545;
@@ -20,9 +20,7 @@ button.close:hover{
     color: #000;
   }
 
-  p{
-      color:red;
-  }
+
   button.close:active{
     
     background-color:green;
@@ -49,3 +47,35 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.my-modal {
+    width: 55vw;    /* Occupy the 90% of the screen width */
+    max-width: 55vw;
+} 
+
+.footer{
+    text-align: center;
+    font-style: italic;
+    border-top: #069697 solid 1px;
+    padding:1rem;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size:1rem;
+  }
+
+  a{
+      color:black;
+  }
+  a:hover{
+      color: #069697
+  }
+
+  .my-modal-small {
+    width: 90vw;    /* Occupy the 90% of the screen width */
+    max-width: 90vw;
+    height: 90vh;
+    max-height: 90vh;
+} 
+  

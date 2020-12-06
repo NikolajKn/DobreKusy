@@ -2,34 +2,31 @@ import React, {Component} from 'react'
 import {Button, Container} from "react-bootstrap"
 import AllMenuCards from "./AllMenuCards"
 import AllMenuMinimal from "./AllMenuMinimal"
-import MenuDetail from "./MenuDetail"
+import MenuDetailSelection from "./MenuDetailSelection"
 import { connect } from "react-redux"
 import {compose} from "redux";
 import './Menu.css';
 import { firestoreConnect } from "react-redux-firebase";
+import { useMediaQuery } from 'react-responsive'
 
-class Menu extends Component{
+const Menu = (props) => {
 
-    constructor(props){
-        super(props);
-    }
+    const isSmall = useMediaQuery({ query: '(max-width: 1000px)' });
 
-    render(){
-        if(!this.props.menu1.actualMenu){
+        if(!props.menu1.actualMenu){
             return(
-                this.props.menu1.minimal ? 
-                <AllMenuMinimal/>
+                props.menu1.minimal ? 
+                <AllMenuMinimal isSmall={isSmall}/>
                 : 
-                <Container>
+                <Container as={"section"}>
                     <h1>All menu</h1>
-                    <Button variant="success" className="buttonAddMenu" onClick={() => this.props.setMinimal(true)}> + New menu</Button>
-                    <AllMenuCards numCol="6"/>
+                    <Button variant="success" className="buttonAddMenu" style={{margin:"0%"}} onClick={() => {props.setMinimal(true)}}> + New menu</Button>
+                    <AllMenuCards numCol="6" isSmall={isSmall}/>
                 </Container>
             )
         } else {
-            return <MenuDetail index={this.props.menu1.actualMenu} />
+            return <MenuDetailSelection index={props.menu1.actualMenu} />
         }
-    }
 }
 
 const setMinimal = (minimal) => {

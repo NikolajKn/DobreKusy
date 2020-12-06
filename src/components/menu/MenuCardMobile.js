@@ -6,13 +6,11 @@ import {connect} from "react-redux";
 import {compose} from "redux";
 import {editItem, deleteItem} from "../../store/actions/menuActions"
 import AlertAfterAction from "./commonElements/AlertAfterAction"
-import { useMediaQuery } from 'react-responsive'
 
-const MenuCard = (props) => {
+const MenuCardMobile = (props) => {
         
         const [showAlert, setShowAlert] = useState(false);
         const [deleting, setDeleting] = useState(false);
-        const isSmall = useMediaQuery({ query: '(max-width: 1000px)' })
 
         const second5day = 432000;
         var usingDate = props.menu && props.menu.date.seconds
@@ -24,7 +22,6 @@ const MenuCard = (props) => {
         var date1 = new Date((usingDate + second5day) * 1000)
         var creatingDate = new Date(creatingDate*1000)
         var menuName = date.toLocaleDateString() + " - " + date1.toLocaleDateString()
-
         if(deleting){
             props.deleteItem(props.index)
             return null
@@ -39,45 +36,42 @@ const MenuCard = (props) => {
                     }
                     <Card bg="Light" style={{marginBottom: "3%", marginTop:"3%"}} as={"article"}>
                         <Card.Header className="menuCardHeader" as={"header"}>
-                        <Row className="align-items-center">
-                        
-                            <Col sm={11}>
-                                {
+                        <Row className="align-items-center justify-content-end">
+                        {
                                 state === "2" ? 
                                     <Button variant="warning" className="sendBtn float-left" data-index = {props.index} onClick={(e) => {
                                         var clone = JSON.parse(JSON.stringify(props.menu));
                                         clone["state"] = "1";
                                         props.editItem(clone, e.target.dataset.index);
                                     }}><span data-index = {props.index} className="sendBtn1">Send for approval</span></Button>
-                                
-                                : state === "1" ? 
-                                    tooltipBasic("Waiting for approval", imgWarning(), "warning float-left")
-                        
-                                : state === "0" ?
-                                    tooltipBasic("Approved!", imgCheck(), "approve float-left")
-                                
-                                : 
-                                    tooltipBasic("Declined!", imgCross(), "delete float-left")
+                                : null
                                 }
-
-                                <h2 className="nameMenu" style={{margin:"1%", float:"left"}} data-index = {props.index} 
-                                onClick={(e)=> props.setActualMenu(e.target.dataset.index)}>
-                                    {menuName}
-                                </h2>
-                            </Col>
-                            {
-                                props.sidebar ? null
-                                :
-                                <Col sm={1} style={{padding:"0px 0px 0px 0px"}}>
-                                <Button variant="danger" className="d-flex justify-content-center btnDelete" style={{width:"50px", height:"50px"}} data-index = {props.index} onClick={
+                                <Button variant="danger" className="d-flex justify-content-center btnDelete" style={{width:"50px", height:"50px", margin:"2%"}} data-index = {props.index} onClick={
                                     (e)=> {setShowAlert(true);
                                     }
                                 }>
                                     {imgTrash()}
                                 </Button>
-                                </Col>
-                            }
+
+
                         </Row>
+                        {state === "1" ? 
+                                    tooltipBasic("Waiting for approval", imgWarning(), "warning float-left")
+                        
+                                : state === "0" ?
+                                    tooltipBasic("Approved!", imgCheck(), "approve float-left")
+                                
+                                : state === "-1" ?
+                                    tooltipBasic("Declined!", imgCross(), "delete float-left")
+                                :null}
+                        <Row>
+
+                        <h2 className="nameMenu float-left" style={{margin:"3%"}} data-index = {props.index} 
+                                onClick={(e)=> props.setActualMenu(e.target.dataset.index)}>
+                                    {menuName}
+                                </h2>
+                        </Row>
+
                         </Card.Header>
                         <Card.Body className="menuCardFooter" as={"footer"}>
                             {author}, {creatingDate.toLocaleDateString()}
@@ -109,5 +103,5 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
     connect(null,mapDispatchToProps),
-)(MenuCard)
+)(MenuCardMobile)
 
