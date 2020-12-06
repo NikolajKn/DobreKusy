@@ -13,25 +13,39 @@ import NikoNav from './components/layout/NikoNav'
 import NikoSignIn from './components/auth/NikoSignIn'
 import AllMenuMinimal from "./components/menu/AllMenuMinimal"
 import Footer from "./components/menu-dialog/footer"
+import firebase from "firebase"
+import { connect } from 'react-redux'
 
-function App() {
-
+function App(props) {
   return (
     <BrowserRouter>
     <NikoNav ></NikoNav>
-    <Switch>
-      <Route path='/SignIn' component={NikoSignIn} />
-      <Route path = "/Storage" component={StorageBoard}/>
-      <Route path='/Menu' component={Menu} />
-      {/*<Route path='/Recipes' component={Recipes} />*/}
-      <Route path='/Home' component={Home} />
-      <Route exact path = "/" component={Home}/> 
-    </Switch>
+    {
+        props.auth.isLoaded && !props.auth.isEmpty ?
+          <Switch>
+            <Route path='/SignIn' component={NikoSignIn} />
+            <Route path = "/Storage" component={StorageBoard}/>
+            <Route path='/Menu' component={Menu} />
+            {/*<Route path='/Recipes' component={Recipes} />*/}
+            <Route path='/Home' component={Home} />
+            <Route path = "/" component={Home}/> 
+          </Switch>
+        :
+        <Switch>
+          <Route path='/SignIn' component={NikoSignIn} />
+          <Route path = "/" component={Home}/> 
+        </Switch>
+    }
     <Footer></Footer>
     </BrowserRouter>
   );
 }
 
+const mapStateToProps = (state) => {
+  return{
+      auth: state.firebase.auth
+  }
+}
 
 
-export default App;
+export default connect(mapStateToProps)(App);
