@@ -1,13 +1,9 @@
 import React, { useEffect, useState }from "react";
-import {Container, Row, Col, Button, Form, Card, Table, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {connect} from "react-redux";
 import {compose} from "redux";
-
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-
 import {editItem, deleteItem} from "../../store/actions/storageActions"
-
+import { useMediaQuery } from 'react-responsive'
 
 const StorageItem = ({item, editItem, deleteItem}) => {
 
@@ -18,6 +14,8 @@ const StorageItem = ({item, editItem, deleteItem}) => {
     var tempDate = itemDate
     //tempDate.setDate(itemDate.getDate()+1)
     var defaultDate = tempDate.toISOString().substr(0,10)
+
+    const isMobile = useMediaQuery({ query: '(max-width: 765px)' })
 
     useEffect(()=>{
         setValues({...item, expiration : expiration, dateForPicker: defaultDate})
@@ -34,7 +32,6 @@ const StorageItem = ({item, editItem, deleteItem}) => {
     
     const handleEditClick = (e) => {  
         if(edit.editing){
-            console.log(values)
             editItem(values)
         }
         setEdit({editing : !edit.editing})
@@ -52,10 +49,14 @@ const StorageItem = ({item, editItem, deleteItem}) => {
     const showItem = () => {
         return(
             <tr>
-                <td className={"tableTextCenter"}>
-                    {
-                        dateDiff <= 7 ? 
-                        <OverlayTrigger
+                {
+                    isMobile ?
+                        null
+                    :
+                        <td className="tableTextCenter" >
+                        {
+                            dateDiff <= 7 ? 
+                            <OverlayTrigger
                             key={"expireAlert"}
                             placement={"top"}
                             overlay={
@@ -63,17 +64,17 @@ const StorageItem = ({item, editItem, deleteItem}) => {
                                 Expires Soon.
                                 </Tooltip>
                             }>
-                            
-                                <svg width="1.0625em" height="1em" viewBox="0 0 17 16" className="bi bi-exclamation-triangle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" d="M7.938 2.016a.146.146 0 0 0-.054.057L1.027 13.74a.176.176 0 0 0-.002.183c.016.03.037.05.054.06.015.01.034.017.066.017h13.713a.12.12 0 0 0 .066-.017.163.163 0 0 0 .055-.06.176.176 0 0 0-.003-.183L8.12 2.073a.146.146 0 0 0-.054-.057A.13.13 0 0 0 8.002 2a.13.13 0 0 0-.064.016zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
-                                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
+                                <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" style={{"backgroundColor": "#fff76a"}} className="bi bi-exclamation-circle rounded-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
                                 </svg>
                             </OverlayTrigger>
-                        :
-                            ""
-                    }
-                </td>
-                <td>{values.name}</td>
+                            :
+                                ""
+                        }
+                        </td>
+                }       
+                <td  style={(isMobile && (dateDiff <= 7)) ? {"color":"red"}:{}}>{values.name}</td>
                 <td>{values.amount}</td>
                 <td>{values.measurementUnit}</td>
                 <td>{values.expiration}</td>
@@ -90,44 +91,50 @@ const StorageItem = ({item, editItem, deleteItem}) => {
     const showEditItem = () => {
         return(
             <tr>
-                <td className="tableTextCenter">
                 {
-                    dateDiff <= 7 ? 
-                    <OverlayTrigger
-                    key={"expireAlert"}
-                    placement={"top"}
-                    overlay={
-                        <Tooltip id={`expireAlert`}>
-                        Expires Soon.
-                        </Tooltip>
-                    }>
-                        <svg width="1.0625em" height="1em" viewBox="0 0 17 16" className="bi bi-exclamation-triangle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M7.938 2.016a.146.146 0 0 0-.054.057L1.027 13.74a.176.176 0 0 0-.002.183c.016.03.037.05.054.06.015.01.034.017.066.017h13.713a.12.12 0 0 0 .066-.017.163.163 0 0 0 .055-.06.176.176 0 0 0-.003-.183L8.12 2.073a.146.146 0 0 0-.054-.057A.13.13 0 0 0 8.002 2a.13.13 0 0 0-.064.016zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
-                            <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
-                        </svg>
-                    </OverlayTrigger>
+                    isMobile ?
+                        null
                     :
-                        ""
-                }
-                </td>
+                        <td className="tableTextCenter">
+                        {
+                            dateDiff <= 7 ? 
+                            <OverlayTrigger
+                            key={"expireAlert"}
+                            placement={"top"}
+                            overlay={
+                                <Tooltip id={`expireAlert`}>
+                                Expires Soon.
+                                </Tooltip>
+                            }>
+                                <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" style={{"backgroundColor": "#fff76a"}} className="bi bi-exclamation-circle rounded-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                                </svg>
+                            </OverlayTrigger>
+                            :
+                                ""
+                        }
+                        </td>
+            }       
                 <td><input className="storageEditInput" value={values.name} onChange={(e) => handleInputChange(e,"name")}></input></td>
-                <td><input className="storageEditInput" value={values.amount} onChange={(e) => handleInputChange(e,"amount")}></input></td>
-                <td><input className="storageEditInput" value={values.measurementUnit} onChange={(e) => handleInputChange(e,"measurementUnit")}></input></td>
-                <td> <input type="date" className="storageEditInput" value={values.dateForPicker} onChange={(e) => handleDatePick(e.target.value)}></input>
-                    {/*
-                        <DatePicker selected={values.dateForPicker} onChange={date => handleDatePick(date)}/>
-    */
-                    }
-                    </td>
+                <td><input type="number" className="storageEditInput" value={values.amount} onChange={(e) => handleInputChange(e,"amount")}></input></td>
+                <td><select className="storageEditInput" value={values.measurementUnit} onChange={(e) => handleInputChange(e,"measurementUnit")} >
+                                <option value="pcs">pcs</option>
+                                <option value="kg">kg</option>
+                                <option value="g">g</option>
+                                <option value="l">l</option>
+                                <option value="ml">ml</option>
+                            </select></td>
+                <td> <input type="date" style={isMobile ? {"width":"40px"}:{}} className="storageEditInput" value={values.dateForPicker} onChange={(e) => handleDatePick(e.target.value)}></input></td>
 
-                <td className={"tableTextCenter"} ><Button block variant={"success"} onClick={() => handleEditClick()}>
+                <td className={"tableTextCenter"} ><Button block variant={"success"} size={isMobile ? "xxs":""} onClick={() => handleEditClick()}>
                     <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-check2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                     </svg>
                     </Button>
                 </td>
 
-                <td className={"tableTextCenter"}><Button block variant={"danger"} onClick={() => handleDeleteClick()}>
+                <td className={"tableTextCenter"}><Button block variant={"danger"} size={isMobile ? "xxs":""} onClick={() => handleDeleteClick()}>
                     <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                         <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
@@ -139,67 +146,21 @@ const StorageItem = ({item, editItem, deleteItem}) => {
     }
 
     
-
     return(   
-        
         values && edit.editing ?
             showEditItem()
         :
             showItem()
-    
-
     )      
 }
 
-/*
-<Card bg={getCardBg()}>    
-             <Card.Header className={"d-flex justify-content-between pt-1 pb-1"} >
-                <h5>{edit.editing ?
-                        <Form >
-                            <Form.Row>
-                                <Col> 
-                                    <Form.Control className={"text-sm"}  name="name" placeholder="Name" value={values.name} onChange={handleInputChange} />
-                                </Col>
-                            </Form.Row>
-                        </Form>
-                    :
-                        item.name   
-                }</h5>
-                
-                
-                    {
-                        edit.editing ? 
-                            <Container className= {"text-right m-0"} >
-                                <Button className={"mr-1"} variant={"dark"} size={"xxs"} onClick={() => handleDeleteClick()} >Delete</Button>
-                                <Button className={"ml-1"} variant={"dark"} size={"xxs"} onClick={() => handleEditClick()} >Save</Button>
-                            </Container>
-                        :
-                            <Button variant={"dark"} size={"xxs"} onClick={() => handleEditClick()} >Edit</Button>
-                    }
-                
-                
-                
-            </Card.Header>
-            <Card.Body className={"d-flex justify-content-between p-1"}>
-            {
-                edit.editing ? 
-                    showEditItem()
-                :
-                    showItem()
-            }   
-           
-           </Card.Body>
-        </Card>*/
-
 const mapStateToProps = (state, props) => {
     return {
-   
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-       //addItem: () => dispatch(addItem())
        editItem: (item) => dispatch(editItem(item)),
        deleteItem: (item) => dispatch(deleteItem(item))
     }

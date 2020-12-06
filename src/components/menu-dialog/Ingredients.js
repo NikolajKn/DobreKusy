@@ -174,7 +174,7 @@ class Ingredients extends Component {
       <Card as="aside" className="bg-light" style={
         !this.props.isSmall ?
           { border: "0", overflow: "auto", height: "60vh" } :
-          { height: "30vh", marginTop: "5%", marginLeft: "5%", marginRight: "5%", border: "#069697 solid 1px" }} >
+          { height: "37vh", marginTop: "1%", marginLeft: "1%", marginRight: "1%", border: "#069697 solid 1px" }} >
 
         <Card.Body style={{ overflow: "auto" }} >
           <Button variant="success" onClick={this.handleClick}>+Ingredient</Button>

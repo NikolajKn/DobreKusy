@@ -37,7 +37,7 @@ class OneDayMenuCard extends Component {
                         recipes.map((recipe1, index) => 
                             this.props.recipes1[recipe1.recipe] ? 
                             !this.props.isSmall ?                           <Row key={index}>
-                            <Col sm={0.5}><Button variant="danger" className="rounded-circle" data-index = {index} 
+                            <Col sm={0.5}><Button variant="danger" style={{marginTop:"2%"}} className="rounded-circle" data-index = {index} 
                         onClick={(e)=> {
                             recipes.splice(e.target.dataset.index, 1);
                             var newMenu= this.props.menu1.newMenu
@@ -59,7 +59,7 @@ class OneDayMenuCard extends Component {
                         </Row>
                             
                         : <Row key={index}>
-                        <Col xs={0.5}><Button variant="danger" className="rounded-circle" style={{padding:"0%"}} data-index = {index} 
+                        <Col xs={0.5}><Button variant="danger" className="rounded-circle" style={{padding:"0%", height:"40px", width:"40px"}} data-index = {index} 
                     onClick={(e)=> {
                         recipes.splice(e.target.dataset.index, 1);
                         var newMenu= this.props.menu1.newMenu

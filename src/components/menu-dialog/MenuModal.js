@@ -27,7 +27,7 @@ const MenuModal = (props) => {
 
   return (
     <div>
-      <Button variant="success" className="rounded-circle" style={{ marginBottom: "5px" }} onClick={handleShow}> + </Button>
+      <Button variant="success" className="rounded-circle" style={isSmall ? {padding:"0%", height:"42px", width:"42px", marginBottom: "5%"}:null} onClick={handleShow}> + </Button>
 
       <Modal
         as="form"
@@ -48,7 +48,7 @@ const MenuModal = (props) => {
 
 
         {isSmall ?
-          <Modal.Body className="bg-light" style={{ paddingTop: "0" }}>
+          <Modal.Body as="section" className="bg-light" style={{ paddingTop: "0" }} >
             <Ingredients isSmall={isSmall}></Ingredients>
             <FilteredRecipes set={setRecipe} isSmall={isSmall}></FilteredRecipes>
           </Modal.Body>

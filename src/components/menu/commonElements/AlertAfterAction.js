@@ -3,8 +3,6 @@ import {Alert, Button, Row, Col} from "react-bootstrap"
 
 const AlertAfterAction = (props) => {
     const [show, setShow] = useState(true);
-    console.log("ROBIM") 
-
     if (show) {
       return (
         <Alert variant={props.variant} style={{marginTop:"3%"}}>
@@ -12,8 +10,8 @@ const AlertAfterAction = (props) => {
             {props.text}
           </p>
           <div style={{textAlign:"center"}}>
-          <Button variant="success" style={{marginRight:"1%", fontWeight:"bold", width:"10%"}} onClick={(e) => {props.delete(true); console.log("MAZEM") }}>Yes</Button>
-          <Button variant="danger" style={{marginLeft:"1%", fontWeight:"bold", width:"10%"}} onClick={(e) => {props.setting(false)}}>No</Button>
+          <Button variant="success" style={{marginRight:"1%", fontWeight:"bold", width:"30%"}} onClick={(e) => {props.delete(true) }}>Yes</Button>
+          <Button variant="danger" style={{marginLeft:"1%", fontWeight:"bold", width:"30%"}} onClick={(e) => {props.setting(false)}}>No</Button>
           </div>
         </Alert>
       );

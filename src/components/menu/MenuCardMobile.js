@@ -35,18 +35,18 @@ const MenuCardMobile = (props) => {
                         null
                     }
                     <Card bg="Light" style={{marginBottom: "3%", marginTop:"3%"}} as={"article"}>
-                        <Card.Header className="menuCardHeader" as={"header"}>
+                        <Card.Header className="menuCardHeader" as={"header"} style={{paddingTop:"1%"}}>
                         <Row className="align-items-center justify-content-end">
                         {
                                 state === "2" ? 
-                                    <Button variant="warning" className="sendBtn float-left" data-index = {props.index} onClick={(e) => {
+                                    <Button variant="warning" className="sendBtn float-left" style={{height:"40px", paddingTop:"0%"}} data-index = {props.index} onClick={(e) => {
                                         var clone = JSON.parse(JSON.stringify(props.menu));
                                         clone["state"] = "1";
                                         props.editItem(clone, e.target.dataset.index);
-                                    }}><span data-index = {props.index} className="sendBtn1">Send for approval</span></Button>
+                                    }}><span data-index = {props.index} className="sendBtn1" style={{textAlign:"middle"}}>Send for approval</span></Button>
                                 : null
                                 }
-                                <Button variant="danger" className="d-flex justify-content-center btnDelete" style={{width:"50px", height:"50px", margin:"2%"}} data-index = {props.index} onClick={
+                                <Button variant="danger" className="d-flex justify-content-center btnDelete" style={{width:"40px", height:"40px", marginLeft:"2%", marginTop:"0%"}} data-index = {props.index} onClick={
                                     (e)=> {setShowAlert(true);
                                     }
                                 }>
@@ -64,13 +64,11 @@ const MenuCardMobile = (props) => {
                                 : state === "-1" ?
                                     tooltipBasic("Declined!", imgCross(), "delete float-left")
                                 :null}
-                        <Row>
 
-                        <h2 className="nameMenu float-left" style={{margin:"3%"}} data-index = {props.index} 
+                        <h2 className="nameMenu float-left" style={{padding:"0%", margin:"0%", marginTop:"1%", marginLeft:"1%"}} data-index = {props.index} 
                                 onClick={(e)=> props.setActualMenu(e.target.dataset.index)}>
                                     {menuName}
                                 </h2>
-                        </Row>
 
                         </Card.Header>
                         <Card.Body className="menuCardFooter" as={"footer"}>
