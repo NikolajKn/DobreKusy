@@ -17,6 +17,7 @@ import firebase from "firebase"
 import { connect } from 'react-redux'
 
 function App(props) {
+
   return (
     <BrowserRouter>
     <NikoNav ></NikoNav>
@@ -31,10 +32,12 @@ function App(props) {
             <Route path = "/" component={Home}/> 
           </Switch>
         :
-        <Switch>
-          <Route path='/SignIn' component={NikoSignIn} />
-          <Route path = "/" component={Home}/> 
-        </Switch>
+          props.auth.isLoaded ?
+            <Switch>
+              <Route path='/' component={NikoSignIn} />
+            </Switch>
+          :
+            null
     }
     <Footer></Footer>
     </BrowserRouter>

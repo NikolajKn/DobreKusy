@@ -144,7 +144,6 @@ const StorageBoard = (props) => {
             <Helmet>
                 <title>Storage</title>
             </Helmet>
-            <Row className={isMobile ? "m-0":""} style={{height : "20px"}}/>
             
             <Row className={isMobile ? "justify-content-center m-0":"justify-content-center"} >            
                 <Col className={isMobile ? "p-0":""}>  

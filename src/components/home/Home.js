@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Row, Col, Button,Table} from "react-bootstrap";
+import {Container, Row, Col, Button,Table,Spinner} from "react-bootstrap";
 import {compose} from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import {connect} from "react-redux";
@@ -21,8 +21,6 @@ var ind = -5
 const Home = (props) => {
     var {storage,men} = props
     
-    console.log(men)
-    console.log(storage)
     
    /* {
         men===undefined ?
@@ -65,9 +63,9 @@ const Home = (props) => {
             {
                 men===undefined ?
                 
-                <div>
-                    <h1>Loading</h1>
-                </div>
+                <Container className="text-center justify-content-center">
+                    <Spinner animation="border" role="status"/>
+                </Container>
                 :
                
                <Container>
