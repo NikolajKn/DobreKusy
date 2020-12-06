@@ -12,7 +12,7 @@ import { useMediaQuery } from 'react-responsive'
 const StorageBoard = (props) => {
     var {addItem,storage} = props
 
-    const isMobile = useMediaQuery({ query: '(max-width: 760px)' })
+    const isMobile = useMediaQuery({ query: '(max-width: 765px)' })
     const [add, setAdd] = useState(false)
     const [newItem, setNewItem] = useState({"measurementUnit":"pcs"})
 
@@ -91,6 +91,46 @@ const StorageBoard = (props) => {
             </Collapse>
         )
     }
+
+    const showFormMobile = () => {
+        return(
+            <Collapse className={"p-1"} in={add}>
+                <Form id="addFormCollapse">
+                    <Form.Row>
+                        <Form.Group as={Col} controlId="formGridName">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control type="text" placeholder="Enter name" onChange={(e) => handleChange(e,"name")} required/>
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridAmount">
+                            <Form.Label>Amount</Form.Label>
+                            <Form.Control type="number" placeholder="Enter Amount" onChange={(e) => handleChange(e,"amount")} required/>
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group as={Col} controlId="formGridUnit">
+                            <Form.Label>Unit</Form.Label>
+                            <Form.Control as="select" placeholder="Choose Unit" onChange={(e) => handleChange(e,"measurementUnit")} defaultValue="pcs" required>
+                                <option>pcs</option>
+                                <option>kg</option>
+                                <option>g</option>
+                                <option>l</option>
+                                <option>ml</option>
+                            </Form.Control>
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridExpiration">
+                            <Form.Label>Expiration Date</Form.Label>
+                            <Form.Control type="date" placeholder="Enter Expiration Date" onChange={(e) => handleChange(e,"expirationDate")} required/>
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Button type="submit" variant = {"success"} style ={{"fontWeight":"bold"}} onClick={(e) => handleSave(e)}>Save</Button>
+                    </Form.Row>
+                </Form>
+            </Collapse>
+        )
+    }
       
     return(       
         storage===undefined ?
@@ -114,12 +154,21 @@ const StorageBoard = (props) => {
                     style ={{"fontWeight":"bold"}}
                     >+ New Ingredient</Button>
                     {
-                        showForm()
+                        isMobile ? 
+                            showFormMobile()
+                        :
+                            showForm()
                     }
                     <Table  striped bordered hover responsive size={isMobile ? "sm":""} >
                     <thead>
                         <tr>
-                            <th></th>
+                            {
+                                isMobile ?
+                                    null
+                                :
+                                    <th></th>
+                            }
+                            
                             <th>Name</th>
                             <th>{isMobile ? "#":"Amount"}</th>
                             <th>Unit</th>
