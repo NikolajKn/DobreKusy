@@ -138,14 +138,11 @@ class MenuDetail extends Component {
 
         if(this.state.editing){   
             if(!this.props.isSmall){
-                return          <Row>
-                <Col sm={2} as={"aside"}>
-                    <AllMenuCards numCol={12} allMenu={JSON.parse(localStorage.getItem("allMenu"))} sidebar={true} />
-                </Col>
-                <Col sm={9} as={"section"}>
+                return
+                    <section>
                     <CreatingMenu update={true} isSmall={this.props.isSmall}/>
-                </Col>
-                </Row>
+                    </section>
+
             } else{
                 return <CreatingMenu update={true} isSmall={this.props.isSmall}/>
 

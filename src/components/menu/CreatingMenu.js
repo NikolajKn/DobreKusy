@@ -75,14 +75,14 @@ class CreatingMenu extends Component {
         return (
             this.state.save ? <Menu />
                 :
-                <div ref={node => this.node = node}>
+                <>
                     {
                         this.props.update ? <h1 style={{ margin: "5%" }}>Update menu</h1>
                         : <h1 style={{ margin: "5%" }}>Create new menu</h1>
                     } 
                     <Card className="creatingCard" as={"article"}  style={this.props.isSmall ?{margin:"2%"}:null} >
                         <Card.Header as={"header"}>
-                            <Button variant="success" style={{ width: "25%" }} className="buttonAddMenu" onClick={() => { this.saveMenu() }}> Save </Button>
+                            <Button variant="success" style={this.props.isSmall ? { width: "50%" }:{width: "25%"}} className="buttonAddMenu" onClick={() => { this.saveMenu() }}> Save </Button>
 
                             <Nav variant="tabs" defaultActiveKey="#0" className="creatingMenuTab" as={"nav"}>
                                 <Nav.Item>
@@ -115,7 +115,7 @@ class CreatingMenu extends Component {
 
                         </Card.Body>
                     </Card>
-                </div>
+                </>
 
 
         )

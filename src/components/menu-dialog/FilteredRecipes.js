@@ -90,7 +90,7 @@ class FilteredRecipes extends Component {
 
 
             <Card as="section" style={!this.props.isSmall ? { height: "60vh", borderColor: "#069697" } :
-                { height: "30vh", borderColor: "#069697", marginTop: "5%", marginLeft: "5%", marginRight: "5%" }}
+                { height: "37vh", borderColor: "#069697", marginTop: "1%", marginLeft: "1%", marginRight: "1%" }}
 
 
             >
