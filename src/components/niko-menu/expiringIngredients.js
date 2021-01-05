@@ -27,8 +27,7 @@ const ExpiringIngredients = ({ingredients}) => {
             </ListGroup>
         </Card>
     )
-    }
+}
     
-
 
 export default ExpiringIngredients
