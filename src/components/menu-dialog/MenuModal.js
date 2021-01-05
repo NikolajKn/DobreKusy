@@ -66,34 +66,35 @@ const MenuModal = (props) => {
           </Modal.Body>
         }
 
-
-
-
         <Modal.Footer as="footer" className="bg-light" style={{ justifyContent: 'center', border: "0" }}>
             <Button variant="success" onClick={() => {
               var rec = []
-              if (props.day === "monday") {
-                rec = props.menu1.newMenu.monday
-                rec.push({ recipe: selectedRecipe, portions: "5" })
-                newMenu.monday = rec
-              } else if (props.day === "tuesday") {
-                rec = props.menu1.newMenu.tuesday
-                rec.push({ recipe: selectedRecipe, portions: "5" })
-                newMenu.tuesday = rec
-              } else if (props.day === "wednesday") {
-                rec = props.menu1.newMenu.wednesday
-                rec.push({ recipe: selectedRecipe, portions: "5" })
-                newMenu.wednesday = rec
-              } else if (props.day === "thursday") {
-                rec = props.menu1.newMenu.thursday
-                rec.push({ recipe: selectedRecipe, portions: "5" })
-                newMenu.thursday = rec
-              } else if (props.day === "friday") {
-                rec = props.menu1.newMenu.friday
-                rec.push({ recipe: selectedRecipe, portions: "5" })
-                newMenu.friday = rec
+              if(selectedRecipe != ""){
+                if (props.day === "monday") {
+                  rec = props.menu1.newMenu.monday
+                  rec.push({ recipe: selectedRecipe, portions: "5" })
+                  newMenu.monday = rec
+                } else if (props.day === "tuesday") {
+                  rec = props.menu1.newMenu.tuesday
+                  rec.push({ recipe: selectedRecipe, portions: "5" })
+                  newMenu.tuesday = rec
+                } else if (props.day === "wednesday") {
+                  rec = props.menu1.newMenu.wednesday
+                  rec.push({ recipe: selectedRecipe, portions: "5" })
+                  newMenu.wednesday = rec
+                } else if (props.day === "thursday") {
+                  rec = props.menu1.newMenu.thursday
+                  rec.push({ recipe: selectedRecipe, portions: "5" })
+                  newMenu.thursday = rec
+                } else if (props.day === "friday") {
+                  rec = props.menu1.newMenu.friday
+                  rec.push({ recipe: selectedRecipe, portions: "5" })
+                  newMenu.friday = rec
+                }
               }
-
+              if(!props.update){
+                localStorage.setItem("menu", JSON.stringify(newMenu))
+              }
               props.setNewMenu(newMenu)
               handleClose()
             }}

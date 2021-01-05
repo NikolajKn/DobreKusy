@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Button, Container} from "react-bootstrap"
 import AllMenuCards from "./AllMenuCards"
 import AllMenuMinimal from "./AllMenuMinimal"
@@ -8,12 +8,52 @@ import {compose} from "redux";
 import './Menu.css';
 import { firestoreConnect } from "react-redux-firebase";
 import { useMediaQuery } from 'react-responsive'
-
+import {setExpiringIngredients} from "../../store/actions/menuActions"
 import {Helmet} from "react-helmet"
+import {imgScrollUp} from "./commonElements/Icons"
 
 const Menu = (props) => {
 
     const isSmall = useMediaQuery({ query: '(max-width: 1000px)' });
+
+    const getExpiringIngredients = () => {
+        var expiration1 = {}
+        console.log(props.storage)
+        props.storage && Object.keys(props.storage).map((ing, index) => {
+        var itemDate = new Date(props.storage[ing].expirationDate.seconds * 1000)
+        var currentDate = new Date(Date.now())
+        var dateDiff = Math.floor((itemDate - currentDate) / 86400000);
+        if (dateDiff <= 7) {
+            var ingredient = props.storage[ing]
+            if(ingredient.measurementUnit == "kg"){
+                ingredient = {
+                    name: ingredient.name, 
+                    amount: ingredient.amount*1000,
+                    measurementUnit: "g"
+                }
+            } else if(ingredient.measurementUnit == "l"){
+                ingredient = {
+                    name: ingredient.name, 
+                    amount: ingredient.amount*1000,
+                    measurementUnit: "ml"
+                }
+            }
+            if(expiration1[ingredient.name] && expiration1[ingredient.name][1] == ingredient.measurementUnit){
+                var amount = expiration1[props.storage[ing].name][0]*1
+                expiration1[ingredient.name] = [amount + ingredient.amount*1, ingredient.measurementUnit]
+            } else {
+                expiration1[ingredient.name] = [ingredient.amount, ingredient.measurementUnit]
+            }
+        }          
+        }
+        )
+        props.setExpiringIngredients(expiration1)
+    }
+
+
+    const scrollTop = () =>{
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
 
         if(!props.menu1.actualMenu){
             return(   
@@ -29,8 +69,13 @@ const Menu = (props) => {
                     <title>Menu</title>
                 </Helmet>
                     <h1>All menu</h1>
-                    <Button variant="success" className="buttonAddMenu" style={{margin:"0%"}} onClick={() => {props.setMinimal(true)}}> + New menu</Button>
+                    <Button variant="success" className="buttonAddMenu" style={{margin:"0%"}} onClick={() => {props.setMinimal(true); getExpiringIngredients()}}> + New menu</Button>
                     <AllMenuCards numCol="6" isSmall={isSmall}/>
+                    <div className="btnScrollUp rounded-circle" onClick={scrollTop}>
+
+                    {imgScrollUp()}                                         
+
+                    </div>
                 </Container>
             )
         } else {
@@ -51,17 +96,19 @@ const setMinimal = (minimal) => {
 
 const mapStateToProps = (state, props) => {
     return {
-        menu1: state.menu
+        menu1: state.menu,
+        storage: state.firestore.ordered.storage
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setMinimal: (minimal) => dispatch(setMinimal(minimal)) 
+        setMinimal: (minimal) => dispatch(setMinimal(minimal)),
+        setExpiringIngredients: (ingr) =>  dispatch(setExpiringIngredients(ingr))
     }
 }
 
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
-    firestoreConnect([{collection:"menu", orderBy:["state","desc"]}])
+    firestoreConnect([{collection:"menu", orderBy:["state","desc"]}, {collection:"storage",orderBy:["expirationDate","asc"]}])
 )(Menu)

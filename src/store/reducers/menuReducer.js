@@ -15,7 +15,8 @@ const initState = {
         thursday: [],
         friday: []
     },
-    filterIngredients:[]
+    filterIngredients:[],
+    expiringIngredients:{}
 }
 
 const menuReducer=(state=initState, action) => {
@@ -108,6 +109,12 @@ const menuReducer=(state=initState, action) => {
                 filterIngredients: action.payload
             }
 
+        case "SET_EXPIRING_INGREDIENTS":
+            return {
+                ...state, 
+                expiringIngredients: action.payload
+            }
+        
         default:
             return state
     }

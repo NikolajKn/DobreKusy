@@ -229,6 +229,7 @@ ul:nth-of-type(1) li {
   right: 20px; 
   background-color: #eeeeee;
   cursor: pointer;
+  z-index: 1;
 }
 
 
@@ -252,6 +253,10 @@ ul:nth-of-type(1) li {
   cursor:pointer;
   margin-left: 2%;
 
+}
+
+.nameMenu:hover{
+  color: #069697;
 }
 
 .btnNameMenu {

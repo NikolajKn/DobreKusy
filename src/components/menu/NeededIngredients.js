@@ -111,9 +111,6 @@ class NeededIngredients extends Component{
 
 
     }
-    
-    
-
 }
 
 const mapStateToProps = (state, props) => {

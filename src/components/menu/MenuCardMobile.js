@@ -65,9 +65,9 @@ const MenuCardMobile = (props) => {
                                     tooltipBasic("Declined!", imgCross(), "delete float-left")
                                 :null}
 
-                        <h2 className="nameMenu float-left" style={{padding:"0%", margin:"0%", marginTop:"1%", marginLeft:"1%"}} data-index = {props.index} 
+                        <h2 className="nameMenu float-left" style={{padding:"0%", margin:"0%", marginTop:"1%", marginLeft:"1%", textDecoration:"underline"}} data-index = {props.index} 
                                 onClick={(e)=> props.setActualMenu(e.target.dataset.index)}>
-                                    {menuName}
+                                    Menu - week: {menuName}
                                 </h2>
 
                         </Card.Header>

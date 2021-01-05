@@ -20,7 +20,6 @@ class AllMenuCards extends Component{
       }
 
     render(){
-        console.log(this.props.menu)
         if(!this.props.menu){
             return <article style={{textAlign:"center"}}><Spinner animation="border" /></article>
         } else{
