@@ -16,6 +16,9 @@ import Footer from "./components/menu-dialog/footer"
 import firebase from "firebase"
 import { connect } from 'react-redux'
 
+
+import NikoModal from "./components/niko-menu/MenuModal"
+
 function App(props) {
 
   return (
@@ -27,7 +30,7 @@ function App(props) {
             <Route path='/SignIn' component={NikoSignIn} />
             <Route path = "/Storage" component={StorageBoard}/>
             <Route path='/Menu' component={Menu} />
-            {/*<Route path='/Recipes' component={Recipes} />*/}
+            <Route path='/Recipes' component={NikoModal} />
             <Route path='/Home' component={Home} />
             <Route path = "/" component={Home}/> 
           </Switch>
