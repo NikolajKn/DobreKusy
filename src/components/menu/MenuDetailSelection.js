@@ -1,7 +1,4 @@
-import React, {Component} from 'react'
-import {Row, Col} from "react-bootstrap"
-import CreatingMenu from './CreatingMenu'
-import AllMenuCards from './AllMenuCards';
+import React from 'react'
 import { useMediaQuery } from 'react-responsive'
 import MenuDetail from "./MenuDetail"
 

@@ -8,9 +8,8 @@ import { InputGroup, Card, FormControl, Button, Form, ListGroup} from 'react-boo
 const ExpiringIngredients = ({ingredients}) => {
 
     const renderItem = (item,i) => {
-
         return (
-            <ListGroup.Item title = {item.name} key = { i + item.name}>{item.name + " " + item.amount + " " + item.measurementUnit}</ListGroup.Item>
+            <ListGroup.Item title = {item} key = { i + item}>{item + " " + ingredients[item][0] + " " + ingredients[item][1]}</ListGroup.Item>
         )
     }
     
@@ -21,7 +20,7 @@ const ExpiringIngredients = ({ingredients}) => {
             </Card.Header>
             <ListGroup className={"flex-nowrap overflow-auto"} horizontal>
                 {
-                    ingredients && ingredients.map((item, i) =>{
+                    ingredients && Object.keys(ingredients).map((item, i) =>{
                         return(renderItem(item,i))
                     })
                 }

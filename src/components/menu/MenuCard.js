@@ -60,9 +60,9 @@ const MenuCard = (props) => {
                                     tooltipBasic("Declined!", imgCross(), "delete float-left")
                                 }
 
-                                <h2 className="nameMenu" style={{margin:"1%", float:"left"}} data-index = {props.index} 
+                                <h2 className="nameMenu" style={{margin:"1%", float:"left", textDecoration: "underline"}} data-index = {props.index} 
                                 onClick={(e)=> props.setActualMenu(e.target.dataset.index)}>
-                                    {menuName}
+                                    Menu - week: {menuName}
                                 </h2>
                             </Col>
                             {

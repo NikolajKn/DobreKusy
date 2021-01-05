@@ -1,17 +1,14 @@
 import React, {Component} from 'react'
-import {Container, Row, Button, Col, Table, Accordion, Card, Image} from "react-bootstrap"
-import PlusMinusButton from './commonElements/PlusMinusButton'
-import {imgDown, imgSet, imgDownload, imgScrollUp, imgCalendar, imgBasket, imgCheck2} from "./commonElements/Icons"
+import {Container, Row, Button, Col, Table, Accordion, Image} from "react-bootstrap"
+import {imgDown, imgSet, imgScrollUp, imgBasket, imgCheck2} from "./commonElements/Icons"
 import calendar from "./obr/calendar.png"
 import {tooltipBasic} from "./commonElements/TooltipBasic"
 import {connect} from "react-redux";
 import {compose} from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import CreatingMenu from "./CreatingMenu"
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
 import Calendar from "./commonElements/Calendar"
-import AllMenuCards from "./AllMenuCards"
 import NeededIngredients from './NeededIngredients'
 import {editItem} from "../../store/actions/menuActions"
 
@@ -83,7 +80,7 @@ class MenuDetail extends Component {
             for(let i = 0; i < recipes.length; i++){
                 for(let j = 0; j < recipes[i].length; j++){
                     var recipe = this.props.recipes[recipes[i][j].recipe]
-                    recipe.ingredients && recipe.ingredients.map((ing) => {
+                    recipe && recipe.ingredients && recipe.ingredients.map((ing) => {
                         var newIng = {...ing}
                         newIng.amount = newIng.amount*1 * recipes[i][j].portions*1
                         ingredients.push(newIng)
@@ -137,21 +134,11 @@ class MenuDetail extends Component {
         var neededIngredients = this.getNeededIngredients() 
 
         if(this.state.editing){   
-            if(!this.props.isSmall){
-                return
-                    <section>
-                    <CreatingMenu update={true} isSmall={this.props.isSmall}/>
-                    </section>
-
-            } else{
-                return <CreatingMenu update={true} isSmall={this.props.isSmall}/>
-
-            }        
-
+            return <CreatingMenu update={true} isSmall={this.props.isSmall}/>
         } else{
             return(
                 <Container style={{width:"75%"}, this.props.isSmall ? {margin:"2%"}:null} as={"section"}>
-                {
+               {
                     !this.props.isSmall ?                 
                     <Row as={"header"}>
                     <Col sm={9}><h1>
@@ -198,6 +185,7 @@ class MenuDetail extends Component {
                                     if(isNaN(oldMenu.date) !== false){
                                         this.props.editItem(oldMenu, this.props.menu1.actualMenu)
                                         this.setState({settingDate:false})
+                                        this.props.setNewMenu(oldMenu)
                                     }}}
                                     style={{marginBottom:"2%"}}>
                                 {imgCheck2()}

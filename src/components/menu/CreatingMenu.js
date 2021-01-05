@@ -1,36 +1,33 @@
 import React, { Component } from 'react'
-import { Card, Nav, Button } from "react-bootstrap"
+import { Card, Nav, Button, Alert } from "react-bootstrap"
 import OneDayMenuCard from './OneDayMenuCard';
 import Menu from "./Menu.js"
 import { connect } from "react-redux"
-import firebase from "firebase"
 import {compose} from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import {addItem, editItem} from "../../store/actions/menuActions"
-
 
 
 class CreatingMenu extends Component {
 
     constructor(props) {
         super(props);
-        var dayGlobal = 0;
-        this.state = { index: 0, save: false };
+        if(localStorage.getItem("menu") != null && localStorage.getItem("menu") != "" && !this.props.update){
+            this.state = { index: 0, showAlert: true};
+        } else {
+            this.state = { index: 0, showAlert: false};
+        }
     }
 
-    setCreatingDate(){
-        var date = Date.now()
-        this.newMenu["creatingDate"] = date
+    recoverData(){
+        var m = JSON.parse(localStorage.getItem("menu"))
+        this.props.setNewMenu(m) 
+        this.setState({showAlert:false})
     }
 
-    setAuthor(){
-        var author = firebase.auth().currentUser
-        this.newMenu["author"] = author
-    }
-
-    setDate(){
-        var date = Date.now()
-        this.newMenu["date"] = date
+    deleteData(){
+        this.setState({showAlert:false})
+        localStorage.setItem("menu", "")
     }
 
     setRecipesDay = (day, array) => {
@@ -69,9 +66,13 @@ class CreatingMenu extends Component {
             thursday: [],
             friday: []
         })
+        if(!this.props.update){
+            localStorage.setItem("menu", "")
+        }
     }
 
     render() {
+
         return (
             this.state.save ? <Menu />
                 :
@@ -80,7 +81,21 @@ class CreatingMenu extends Component {
                         this.props.update ? <h1 style={{ margin: "5%" }}>Update menu</h1>
                         : <h1 style={{ margin: "5%" }}>Create new menu</h1>
                     } 
-                    <Card className="creatingCard" as={"article"}  style={this.props.isSmall ?{margin:"2%"}:null} >
+                    {
+                        this.state.showAlert ? 
+                        <Alert variant="dark">
+                            <Alert.Heading>Unsaved menu</Alert.Heading>
+                            <p>
+                            Previous menu wasn't saved. Do you want to recover data?  
+                            </p>
+                            <div style={{textAlign:"center"}}>
+                            <Button variant="success" style={this.props.isSmall ? { width:"48%"}:{width:"20%", marginRight:"1%"}} onClick={(e) => {this.recoverData()}}>Yes</Button>
+                            <Button variant="danger" style={this.props.isSmall ? { width:"48%"}:{width:"20%", marginLeft:"1%"}} onClick={(e) => {this.deleteData()}}>No</Button>
+                            </div>
+                        </Alert>
+
+                        :
+                        <Card className="creatingCard" as={"article"}  style={this.props.isSmall ?{margin:"2%"}:null} >
                         <Card.Header as={"header"}>
                             <Button variant="success" style={this.props.isSmall ? { width: "50%" }:{width: "25%"}} className="buttonAddMenu" onClick={() => { this.saveMenu() }}> Save </Button>
 
@@ -106,18 +121,17 @@ class CreatingMenu extends Component {
                             <Card.Title className="creatingCardText" as={"header"}>Selected recipes:</Card.Title>
 
                             {
-                                this.state.index == 0 ? <OneDayMenuCard index={0} day={"monday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall} />
-                                    : this.state.index == 1 ? <OneDayMenuCard index={1} day={"tuesday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall}/>
-                                        : this.state.index == 2 ? <OneDayMenuCard index={2} day={"wednesday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall}/>
-                                            : this.state.index == 3 ? <OneDayMenuCard index={3} day={"thursday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall}/>
-                                                : <OneDayMenuCard index={4} day={"friday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall}/>
+                                this.state.index == 0 ? <OneDayMenuCard index={0} day={"monday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall} update={this.props.update} />
+                                    : this.state.index == 1 ? <OneDayMenuCard index={1} day={"tuesday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall} update={this.props.update} />
+                                        : this.state.index == 2 ? <OneDayMenuCard index={2} day={"wednesday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall} update={this.props.update} />
+                                            : this.state.index == 3 ? <OneDayMenuCard index={3} day={"thursday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall} update={this.props.update} />
+                                                : <OneDayMenuCard index={4} day={"friday"} setRecipes={this.setRecipesDay} isSmall={this.props.isSmall} update={this.props.update} />
                             }
 
                         </Card.Body>
                     </Card>
+                    }
                 </>
-
-
         )
     }
 }  
@@ -138,7 +152,8 @@ const setNewMenu = (menu) => {
 
 const mapStateToProps = (state, props) => {
     return {
-        menu1: state.menu
+        menu1: state.menu,
+        recipes1: state.firestore.data.recipes
     }
 }
 
@@ -153,7 +168,7 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
-    firestoreConnect([{collection:"menu", orderBy:["state","desc"]}])
+    firestoreConnect([{collection:"menu", orderBy:["state","desc"]},{collection:"recipes"}])
 )(CreatingMenu)
 
 
