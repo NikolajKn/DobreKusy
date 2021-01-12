@@ -72,23 +72,23 @@ const MenuModal = (props) => {
               if(selectedRecipe != ""){
                 if (props.day === "monday") {
                   rec = props.menu1.newMenu.monday
-                  rec.push({ recipe: selectedRecipe, portions: "5" })
+                  rec.push({ recipe: selectedRecipe, portions: "1" })
                   newMenu.monday = rec
                 } else if (props.day === "tuesday") {
                   rec = props.menu1.newMenu.tuesday
-                  rec.push({ recipe: selectedRecipe, portions: "5" })
+                  rec.push({ recipe: selectedRecipe, portions: "1" })
                   newMenu.tuesday = rec
                 } else if (props.day === "wednesday") {
                   rec = props.menu1.newMenu.wednesday
-                  rec.push({ recipe: selectedRecipe, portions: "5" })
+                  rec.push({ recipe: selectedRecipe, portions: "1" })
                   newMenu.wednesday = rec
                 } else if (props.day === "thursday") {
                   rec = props.menu1.newMenu.thursday
-                  rec.push({ recipe: selectedRecipe, portions: "5" })
+                  rec.push({ recipe: selectedRecipe, portions: "1" })
                   newMenu.thursday = rec
                 } else if (props.day === "friday") {
                   rec = props.menu1.newMenu.friday
-                  rec.push({ recipe: selectedRecipe, portions: "5" })
+                  rec.push({ recipe: selectedRecipe, portions: "1" })
                   newMenu.friday = rec
                 }
               }
@@ -96,6 +96,7 @@ const MenuModal = (props) => {
                 localStorage.setItem("menu", JSON.stringify(newMenu))
               }
               props.setNewMenu(newMenu)
+              props.recalculateExpiringIngredients(-1,selectedRecipe)
               handleClose()
             }}
 

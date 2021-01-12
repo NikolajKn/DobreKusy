@@ -8,6 +8,7 @@ const PlusMinusButton = (props) => {
         var numberOfPortions = oldPortion*1 - newPortion*1
         var actualRecipe = props.oldMenu && props.oldMenu[props.day] && props.oldMenu[props.day][props.index] && props.oldMenu[props.day][props.index].recipe
         var expiringIngredients1 = JSON.parse(JSON.stringify(props.expiringIngredients))
+        var otherIngredients1 = JSON.parse(JSON.stringify(props.otherIngredients))
         var ingredientsInRecipe = props.allRecipes && props.allRecipes[actualRecipe] && props.allRecipes[actualRecipe].ingredients
         console.log("INGR IN RECIPE")
         console.log(ingredientsInRecipe)
@@ -17,9 +18,16 @@ const PlusMinusButton = (props) => {
                     expiringIngredients1[ingr.name][0] += (numberOfPortions*1 * ingr.amount)
                 }
             }
+            if(props.otherIngredients && props.otherIngredients[ingr.name]){
+                if(props.otherIngredients[ingr.name][1] == ingr.measurementUnit){
+                    otherIngredients1[ingr.name][0] += (numberOfPortions*1 * ingr.amount)
+                }
+            }
         })
         props.setExpiringIngredients(expiringIngredients1)
+        props.setOtherIngredients(otherIngredients1)
         console.log(expiringIngredients1)
+        console.log(otherIngredients1)
     }
 
     const handleOnChange = (e) => {

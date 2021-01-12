@@ -8,7 +8,7 @@ import {compose} from "redux";
 import './Menu.css';
 import { firestoreConnect } from "react-redux-firebase";
 import { useMediaQuery } from 'react-responsive'
-import {setExpiringIngredients} from "../../store/actions/menuActions"
+import {setExpiringIngredients, setOtherIngredients} from "../../store/actions/menuActions"
 import {Helmet} from "react-helmet"
 import {imgScrollUp} from "./commonElements/Icons"
 
@@ -18,36 +18,43 @@ const Menu = (props) => {
 
     const getExpiringIngredients = () => {
         var expiration1 = {}
-        console.log(props.storage)
+        var otherIngredients = {}
         props.storage && Object.keys(props.storage).map((ing, index) => {
         var itemDate = new Date(props.storage[ing].expirationDate.seconds * 1000)
         var currentDate = new Date(Date.now())
         var dateDiff = Math.floor((itemDate - currentDate) / 86400000);
-        if (dateDiff <= 7) {
-            var ingredient = props.storage[ing]
-            if(ingredient.measurementUnit == "kg"){
-                ingredient = {
-                    name: ingredient.name, 
-                    amount: ingredient.amount*1000,
-                    measurementUnit: "g"
-                }
-            } else if(ingredient.measurementUnit == "l"){
-                ingredient = {
-                    name: ingredient.name, 
-                    amount: ingredient.amount*1000,
-                    measurementUnit: "ml"
-                }
+        var ingredient = props.storage[ing]
+        if(ingredient.measurementUnit == "kg"){
+            ingredient = {
+                name: ingredient.name, 
+                amount: ingredient.amount*1000,
+                measurementUnit: "g"
             }
+        } else if(ingredient.measurementUnit == "l"){
+            ingredient = {
+                name: ingredient.name, 
+                amount: ingredient.amount*1000,
+                measurementUnit: "ml"
+            }
+        }
+        if (dateDiff <= 7) {
             if(expiration1[ingredient.name] && expiration1[ingredient.name][1] == ingredient.measurementUnit){
                 var amount = expiration1[props.storage[ing].name][0]*1
                 expiration1[ingredient.name] = [amount + ingredient.amount*1, ingredient.measurementUnit]
             } else {
                 expiration1[ingredient.name] = [ingredient.amount, ingredient.measurementUnit]
             }
-        }          
+        } 
+        if(otherIngredients[ingredient.name] && otherIngredients[ingredient.name][1] == ingredient.measurementUnit){
+            var amount = otherIngredients[props.storage[ing].name][0]*1
+            otherIngredients[ingredient.name] = [amount + ingredient.amount*1, ingredient.measurementUnit]
+        } else {
+            otherIngredients[ingredient.name] = [ingredient.amount, ingredient.measurementUnit]
+        }            
         }
         )
         props.setExpiringIngredients(expiration1)
+        props.setOtherIngredients(otherIngredients)
     }
 
 
@@ -104,7 +111,8 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setMinimal: (minimal) => dispatch(setMinimal(minimal)),
-        setExpiringIngredients: (ingr) =>  dispatch(setExpiringIngredients(ingr))
+        setExpiringIngredients: (ingr) =>  dispatch(setExpiringIngredients(ingr)),
+        setOtherIngredients: (ingr) =>  dispatch(setOtherIngredients(ingr))
     }
 }
 

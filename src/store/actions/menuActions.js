@@ -35,6 +35,15 @@ export const setExpiringIngredients = ingr => {
     }
 }
 
+export const setOtherIngredients = ingr => {
+    return {
+        type: "SET_OTHER_INGREDIENTS", 
+        payload: ingr
+    }
+}
+
+
+
 export const fetchAllMenu = () => {
     return (dispatch) => {
         dispatch(sendRequest())

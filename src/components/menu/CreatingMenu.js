@@ -72,7 +72,9 @@ class CreatingMenu extends Component {
     }
 
     render() {
-
+        console.log("TU PISEM ")
+        console.log(this.props.menu1.expiringIngredients)
+        console.log(this.props.menu1.otherIngredients)
         return (
             this.state.save ? <Menu />
                 :

@@ -4,7 +4,7 @@ import PlusMinusButton from './commonElements/PlusMinusButton'
 import MenuModal from "../menu-dialog/MenuModal"
 import { connect } from "react-redux"
 import {compose} from "redux";
-import {setExpiringIngredients} from "../../store/actions/menuActions"
+import {setExpiringIngredients, setOtherIngredients} from "../../store/actions/menuActions"
 import { firestoreConnect } from "react-redux-firebase";
 
 class OneDayMenuCard extends Component {
@@ -17,6 +17,7 @@ class OneDayMenuCard extends Component {
 
     recalculateExpiringIngredients(portion, actualRecipe){
         var expiringIngredients1 = JSON.parse(JSON.stringify(this.props.menu1.expiringIngredients))
+        var otherIngredients1 = JSON.parse(JSON.stringify(this.props.menu1.otherIngredients))
         var ingredientsInRecipe = this.props.recipes1 && this.props.recipes1[actualRecipe] && this.props.recipes1[actualRecipe].ingredients
         console.log("INGR IN RECIPE")
         console.log(ingredientsInRecipe)
@@ -27,8 +28,14 @@ class OneDayMenuCard extends Component {
                     expiringIngredients1[ingr.name][0] += (portion*1 * ingr.amount)
                 }
             }
+            if(otherIngredients1 && otherIngredients1[ingr.name]){
+                if(otherIngredients1[ingr.name][1] == ingr.measurementUnit){
+                    otherIngredients1[ingr.name][0] += (portion*1 * ingr.amount)
+                }
+            }
         })
         this.props.setExpiringIngredients(expiringIngredients1)
+        this.props.setOtherIngredients(otherIngredients1)
         console.log(expiringIngredients1)
     }
 
@@ -49,10 +56,7 @@ class OneDayMenuCard extends Component {
         return(
             <Container className="recipeInMenu" as={"article"}>
                 <Row>
-                    <MenuModal day={this.props.day} update={this.props.update} />
-                    {
-                        console.log(this.props.menu1.expiringIngredients)
-                    }
+                    <MenuModal day={this.props.day} update={this.props.update} recalculateExpiringIngredients={this.recalculateExpiringIngredients.bind(this)} />
                 </Row>
                 {
                      recipes && recipes.length != 0 ? 
@@ -82,14 +86,19 @@ class OneDayMenuCard extends Component {
                             this.props.setNewMenu(newMenu)
                         }}> X </Button></Col>
                             <Col sm={7}><p>{this.props.recipes1 && this.props.recipes1[recipe1.recipe].name}</p></Col>
-                            <Col sm={4.5}><PlusMinusButton day={this.props.day} index={index} oldMenu={this.props.menu1.newMenu} setNewMenu={this.props.setNewMenu.bind(this)} isSmall={this.props.isSmall} allRecipes={this.props.recipes1} setExpiringIngredients={this.props.setExpiringIngredients.bind(this)} expiringIngredients={this.props.menu1.expiringIngredients} /></Col>
+                            <Col sm={4.5}><PlusMinusButton day={this.props.day} index={index} oldMenu={this.props.menu1.newMenu} setNewMenu={this.props.setNewMenu.bind(this)} isSmall={this.props.isSmall} allRecipes={this.props.recipes1} 
+                            setExpiringIngredients={this.props.setExpiringIngredients.bind(this)} expiringIngredients={this.props.menu1.expiringIngredients} 
+                            setOtherIngredients={this.props.setOtherIngredients.bind(this)} otherIngredients={this.props.menu1.otherIngredients}/></Col>
                         </Row>
                             
                         : <Row key={index}>
                         <Col xs={0.5}><Button variant="danger" className="rounded-circle" style={{padding:"0%", height:"40px", width:"40px"}} data-index = {index} 
                     onClick={(e)=> {
-                        console.log(recipes[e.target.dataset.index])
-                        
+
+                        if(recipes[e.target.dataset.index]){
+                            var rec = recipes[e.target.dataset.index]
+                            this.recalculateExpiringIngredients(rec.portions, rec.recipe)
+                        }                        
                         recipes.splice(e.target.dataset.index, 1);
                         var newMenu= this.props.menu1.newMenu
                         if (this.props.day == "monday"){
@@ -103,11 +112,12 @@ class OneDayMenuCard extends Component {
                         } else if(this.props.day == "friday"){
                             newMenu.friday = recipes
                         }
-                        //recalculateExpiringIngredients()
                         this.props.setNewMenu(newMenu)
                     }}> X </Button></Col>
                         <Col xs={7} style={{fontSize:"1.5em"}}>{this.props.recipes1 && this.props.recipes1[recipe1.recipe].name}</Col>
-                        <Col xs={2}><PlusMinusButton day={this.props.day} index={index} oldMenu={this.props.menu1.newMenu} setNewMenu={this.props.setNewMenu.bind(this)} isSmall={this.props.isSmall} allRecipes={this.props.recipes1} setExpiringIngredients={this.props.setExpiringIngredients.bind(this)} expiringIngredients={this.props.menu1.expiringIngredients}/></Col>
+                        <Col xs={2}><PlusMinusButton day={this.props.day} index={index} oldMenu={this.props.menu1.newMenu} setNewMenu={this.props.setNewMenu.bind(this)} isSmall={this.props.isSmall} allRecipes={this.props.recipes1} 
+                        setExpiringIngredients={this.props.setExpiringIngredients.bind(this)} expiringIngredients={this.props.menu1.expiringIngredients}
+                        setOtherIngredients={this.props.setOtherIngredients.bind(this)} otherIngredients={this.props.menu1.otherIngredients}/></Col>
                     </Row>
                         : null
                         ) 
@@ -137,7 +147,8 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setNewMenu: (menu) => dispatch(setNewMenu(menu)),
-        setExpiringIngredients: (ingr) =>  dispatch(setExpiringIngredients(ingr)) 
+        setExpiringIngredients: (ingr) =>  dispatch(setExpiringIngredients(ingr)),
+        setOtherIngredients: (ingr) =>  dispatch(setOtherIngredients(ingr)) 
     }
 }
 

@@ -114,7 +114,13 @@ const menuReducer=(state=initState, action) => {
                 ...state, 
                 expiringIngredients: action.payload
             }
-        
+
+        case "SET_OTHER_INGREDIENTS":
+            return {
+                ...state, 
+                otherIngredients: action.payload
+            }
+            
         default:
             return state
     }
