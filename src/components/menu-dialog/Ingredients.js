@@ -26,8 +26,6 @@ class Ingredients extends Component {
     };
   }
 
-
-
   componentDidUpdate(prevProps) {
     if (this.props !== prevProps) {
       var ingredients1 = []
@@ -35,8 +33,9 @@ class Ingredients extends Component {
         ingredients1.push(this.props.storage[ing].name)
       }
       )
+
       var expiration1 = []
-      this.props.storage && Object.keys(this.props.storage).map((ing, index) => {
+      /*this.props.storage && Object.keys(this.props.storage).map((ing, index) => {
         var itemDate = new Date(this.props.storage[ing].expirationDate.seconds * 1000)
         var currentDate = new Date(Date.now())
         var dateDiff = Math.floor((itemDate - currentDate) / 86400000);
@@ -44,7 +43,15 @@ class Ingredients extends Component {
           expiration1.push(this.props.storage[ing].name)
         }
       }
+      )*/
+
+      this.props.menuState && this.props.menuState.expiringIngredients && Object.keys(this.props.menuState.expiringIngredients).map((ing, index) => {
+          if(this.props.menuState.expiringIngredients[ing][0] > 0){
+            expiration1.push(ing)
+          }
+      }
       )
+
       if (this.state.checked.length == 0) {
 
         var chec = []
@@ -211,16 +218,17 @@ class Ingredients extends Component {
 
           <h2 style={{ fontSize: "18px", margin: " 5px 0 5px 0", fontWeight: "bold" }}>Close to expiration date:</h2>
           <div style={{ marginTop: "10px" }}>
-            {this.state.expiration.map((value, index) =>
-              <Form.Check
+            {console.log(this.state.expiration)}
+            {this.state.expiration.map((value, index) => 
+                <Form.Check
                 key={index}
                 type="checkbox"
-                label={value}
+                label={value + " - " + this.props.menuState.expiringIngredients[value][0] + this.props.menuState.expiringIngredients[value][1]}
                 name="formHorizontalRadios"
                 id={"e" + index}
                 onChange={this.onChangeCheckbox}
                 style={{ color: "red", fontSize: "18px" }}
-              />
+            />
             )}
 
           </div>

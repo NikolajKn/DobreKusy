@@ -1,0 +1,51 @@
+.ttt{
+    color:red;
+}
+
+button.close {
+    background-color:#dc3545;
+    color:white;
+}
+button.close:hover{
+    
+    background-color:#dc3545;
+    color:white;
+}
+
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    opacity: 1;
+    color: #000;
+  }
+
+  p{
+      color:red;
+  }
+  button.close:active{
+    
+    background-color:green;
+    color:white;
+    border-color:blue;
+}
+
+#basic-typeahead-single{
+    color:"green"
+}
+
+table {
+    color:"red"
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

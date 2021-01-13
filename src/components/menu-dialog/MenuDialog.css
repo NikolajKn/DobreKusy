@@ -56,21 +56,24 @@ input[type=number] {
 .footer{
     text-align: center;
     font-style: italic;
-    border-top: #069697 solid 1px;
-    padding:1rem;
+    padding-top:1rem;
     position: relative;
     bottom: 0;
     left: 0;
     width: 100%;
     font-size:1rem;
+    background-color: #343a40;
+    color: white;
+    clear: both;
+    
   }
 
   a{
-      color:black;
-  }
-  a:hover{
-      color: #069697
-  }
+    color:white;
+}
+a:hover{
+    color: #069697
+}
 
   .my-modal-small {
     width: 100vw;    /* Occupy the 90% of the screen width */

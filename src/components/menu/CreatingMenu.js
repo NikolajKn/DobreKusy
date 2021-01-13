@@ -5,7 +5,7 @@ import Menu from "./Menu.js"
 import { connect } from "react-redux"
 import {compose} from "redux";
 import { firestoreConnect } from "react-redux-firebase";
-import {addItem, editItem} from "../../store/actions/menuActions"
+import {addItem, editItem, setOtherIngredients, setExpiringIngredients} from "../../store/actions/menuActions"
 
 
 class CreatingMenu extends Component {
@@ -19,9 +19,62 @@ class CreatingMenu extends Component {
         }
     }
 
+
+    recalculateExpiringIngredients(portion, actualRecipe){
+        var expiringIngredients1 = JSON.parse(JSON.stringify(this.props.menu1.expiringIngredients))
+        var otherIngredients1 = JSON.parse(JSON.stringify(this.props.menu1.otherIngredients))
+        var ingredientsInRecipe = this.props.recipes1 && this.props.recipes1[actualRecipe] && this.props.recipes1[actualRecipe].ingredients
+        ingredientsInRecipe && ingredientsInRecipe.map((ingr) => {
+            if(expiringIngredients1 && expiringIngredients1[ingr.name]){
+                console.log(ingr)
+                console.log(expiringIngredients1)
+                if(expiringIngredients1[ingr.name][1] == ingr.measurementUnit){
+                    console.log("ODPOc")
+                    expiringIngredients1[ingr.name][0] += (portion*1 * ingr.amount)
+                    console.log(expiringIngredients1)
+
+                }
+            }
+            if(otherIngredients1 && otherIngredients1[ingr.name]){
+                if(otherIngredients1[ingr.name][1] == ingr.measurementUnit){
+                    otherIngredients1[ingr.name][0] += (portion*1 * ingr.amount)
+                }
+            }
+        })
+        this.props.setExpiringIngredients(expiringIngredients1)
+        this.props.setOtherIngredients(otherIngredients1)
+    }
+
+    minusIngredients(day){
+        day && day.map((recipe1) => {
+            console.log("DOSLA")
+            this.recalculateExpiringIngredients(-recipe1.portions, recipe1.recipe)
+            console.log(this.props.menu1.expiringIngredients)
+        })
+    }
+
+    componentDidMount(){        
+        console.log("SOM TU")
+        var monday = this.props.menu1 && this.props.menu1.newMenu && this.props.menu1.newMenu.monday
+        var tuesday = this.props.menu1 && this.props.menu1.newMenu && this.props.menu1.newMenu.tuesday
+        var wednesday = this.props.menu1 && this.props.menu1.newMenu && this.props.menu1.newMenu.wednesday
+        var thursday = this.props.menu1 && this.props.menu1.newMenu && this.props.menu1.newMenu.thursday
+        var friday = this.props.menu1 && this.props.menu1.newMenu && this.props.menu1.newMenu.friday
+        this.minusIngredients(monday)
+        this.minusIngredients(tuesday)
+        this.minusIngredients(wednesday)
+        this.minusIngredients(thursday)
+        this.minusIngredients(friday)
+    }
+
+
     recoverData(){
         var m = JSON.parse(localStorage.getItem("menu"))
         this.props.setNewMenu(m) 
+        console.log("NEEDED")
+        //this.getNeededData()
+        console.log("EXPIR")
+        console.log(this.props.menu1.expiringIngredients)
         this.setState({showAlert:false})
     }
 
@@ -72,7 +125,9 @@ class CreatingMenu extends Component {
     }
 
     render() {
-
+        console.log("TU PISEM ")
+        console.log(this.props.menu1.expiringIngredients)
+        console.log(this.props.menu1.otherIngredients)
         return (
             this.state.save ? <Menu />
                 :
@@ -162,7 +217,9 @@ const mapDispatchToProps = (dispatch) => {
         addItem: (menu) => dispatch(addItem(menu)), 
         setMinimal: (minimal) => dispatch(setMinimal(minimal)),
         editItem: (menu, index) => dispatch(editItem(menu, index)),
-        setNewMenu: (menu) => dispatch(setNewMenu(menu)) 
+        setNewMenu: (menu) => dispatch(setNewMenu(menu)),
+        setExpiringIngredients: (ingr) =>  dispatch(setExpiringIngredients(ingr)),
+        setOtherIngredients: (ingr) =>  dispatch(setOtherIngredients(ingr))
     }
 }
 

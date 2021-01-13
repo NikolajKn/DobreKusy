@@ -40,6 +40,7 @@ class MenuDetail extends Component {
             friday: friday
         }
         this.props.setNewMenu(menuState)
+        this.props.getExpiringIngredients()
     }
 
     changeDate(days){

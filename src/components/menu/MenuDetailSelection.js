@@ -8,11 +8,11 @@ const MenuDetailSelection = (props) => {
 
     if(!isSmall){
         return(
-            <MenuDetail index={props.index} isSmall={false}/>
+            <MenuDetail index={props.index} isSmall={false} getExpiringIngredients={props.getExpiringIngredients}/>
             )
     } else{
         return(
-            <MenuDetail index={props.index} isSmall={true}/>
+            <MenuDetail index={props.index} isSmall={true} getExpiringIngredients={props.getExpiringIngredients}/>
         )
     }
 
