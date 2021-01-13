@@ -19,9 +19,6 @@ class OneDayMenuCard extends Component {
         var expiringIngredients1 = JSON.parse(JSON.stringify(this.props.menu1.expiringIngredients))
         var otherIngredients1 = JSON.parse(JSON.stringify(this.props.menu1.otherIngredients))
         var ingredientsInRecipe = this.props.recipes1 && this.props.recipes1[actualRecipe] && this.props.recipes1[actualRecipe].ingredients
-        console.log("INGR IN RECIPE")
-        console.log(ingredientsInRecipe)
-        console.log(expiringIngredients1)
         ingredientsInRecipe && ingredientsInRecipe.map((ingr) => {
             if(expiringIngredients1 && expiringIngredients1[ingr.name]){
                 if(expiringIngredients1[ingr.name][1] == ingr.measurementUnit){
@@ -36,7 +33,6 @@ class OneDayMenuCard extends Component {
         })
         this.props.setExpiringIngredients(expiringIngredients1)
         this.props.setOtherIngredients(otherIngredients1)
-        console.log(expiringIngredients1)
     }
 
     render(){

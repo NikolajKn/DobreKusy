@@ -13,13 +13,14 @@ import NikoNav from './components/layout/NikoNav'
 import NikoSignIn from './components/auth/NikoSignIn'
 import AllMenuMinimal from "./components/menu/AllMenuMinimal"
 import Footer from "./components/menu-dialog/footer"
+import MainPage from "./components/main-page/mainPage"
 import firebase from "firebase"
 import { connect } from 'react-redux'
-
 function App(props) {
 
   return (
     <BrowserRouter>
+    <div style = {{minHeight:"90vh"}}>
     <NikoNav ></NikoNav>
     {
         props.auth.isLoaded && !props.auth.isEmpty ?
@@ -28,8 +29,8 @@ function App(props) {
             <Route path = "/Storage" component={StorageBoard}/>
             <Route path='/Menu' component={Menu} />
             {/*<Route path='/Recipes' component={Recipes} />*/}
-            <Route path='/Home' component={Home} />
-            <Route path = "/" component={Home}/> 
+            <Route path='/Home' component={MainPage} />
+            <Route path = "/" component={MainPage}/> 
           </Switch>
         :
           props.auth.isLoaded ?
@@ -39,7 +40,11 @@ function App(props) {
           :
             null
     }
-    <Footer></Footer>
+    </div>
+    <div style = {{height:"10vh", backgroundColor:"#343a40"}}>
+      <Footer></Footer>
+    </div>
+    
     </BrowserRouter>
   );
 }

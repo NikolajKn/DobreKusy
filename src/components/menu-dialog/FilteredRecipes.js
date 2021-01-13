@@ -27,10 +27,24 @@ class FilteredRecipes extends Component {
             selected: "",
             search: null,
             selectedRadioId: null,
-            filterRecipes: []
+            filterRecipes: [],
+            selectedID: ""
         };
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props !== prevProps) {
+            this.clear()
+        }   
+    }
+
+    clear = () =>{
+        var newSelected = "";
+        this.setState({ selected: newSelected });
+        var newSelectedRadioId = null;
+        this.setState({ selectedRadioId: newSelectedRadioId });
+
+    }
 
     onChangeRadio = (e) => {
         var newSelected = e.target.dataset.recipe;
@@ -41,6 +55,7 @@ class FilteredRecipes extends Component {
         this.props.recipes && Object.keys(this.props.recipes).map((recipe, index) => {
             if (this.props.recipes[recipe].name == newSelected) {
                 this.props.set(recipe)
+                this.setState({ selectedID: recipe })
             }
         })
         // this.props.set(newSelected)
@@ -115,18 +130,30 @@ class FilteredRecipes extends Component {
                             else if (data.toLowerCase().includes(this.state.search.toLowerCase())) {
                                 return data
                             }
-                        }).map((recipe, index) =>
-                            <Form.Check
-                                key={index}
-                                type="radio"
-                                label={recipe}
-                                id={"r" + index}
-                                checked={this.state.selectedRadioId === "r" + index}
-                                name="recipe"
-                                data-recipe={recipe}
-                                onChange={this.onChangeRadio}
-                                style={{ fontSize: "20px" }}
-                            />
+                        }).map((recipe, index) => {
+                            var label = recipe
+                                return (
+                                    <div key={index}>
+                                    <Form.Check
+                                    key={index}
+                                    type="radio"
+                                    label={label}
+                                    id={"r" + index}
+                                    checked={this.state.selectedRadioId === "r" + index}
+                                    name="recipe"
+                                    data-recipe={recipe}
+                                    onChange={this.onChangeRadio}
+                                    style={{ fontSize: "20px" }}
+                                /> 
+                                {this.state.selectedRadioId === ("r" + index) ?
+                                this.props.recipes[this.state.selectedID] && this.props.recipes[this.state.selectedID].ingredients 
+                                && this.props.recipes[this.state.selectedID] && this.props.recipes[this.state.selectedID].ingredients.map((ing, index) => 
+                                    <li style={{marginLeft:"5%"}} key={index}>{ing.name + " - " + ing.amount + ing.measurementUnit}</li>
+                                ) : null}                                                            
+                                </div>
+                                )
+                            } 
+
                         )}
 
                 </Card.Body>

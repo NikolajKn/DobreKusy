@@ -42,15 +42,16 @@ const Menu = (props) => {
                 var amount = expiration1[props.storage[ing].name][0]*1
                 expiration1[ingredient.name] = [amount + ingredient.amount*1, ingredient.measurementUnit]
             } else {
-                expiration1[ingredient.name] = [ingredient.amount, ingredient.measurementUnit]
+                expiration1[ingredient.name] = [ingredient.amount*1, ingredient.measurementUnit]
             }
-        } 
-        if(otherIngredients[ingredient.name] && otherIngredients[ingredient.name][1] == ingredient.measurementUnit){
-            var amount = otherIngredients[props.storage[ing].name][0]*1
-            otherIngredients[ingredient.name] = [amount + ingredient.amount*1, ingredient.measurementUnit]
         } else {
-            otherIngredients[ingredient.name] = [ingredient.amount, ingredient.measurementUnit]
-        }            
+            if(otherIngredients[ingredient.name] && otherIngredients[ingredient.name][1] == ingredient.measurementUnit){
+                var amount = otherIngredients[props.storage[ing].name][0]*1
+                otherIngredients[ingredient.name] = [amount + ingredient.amount*1, ingredient.measurementUnit]
+            } else {
+                otherIngredients[ingredient.name] = [ingredient.amount*1, ingredient.measurementUnit]
+            } 
+        }     
         }
         )
         props.setExpiringIngredients(expiration1)
@@ -86,7 +87,7 @@ const Menu = (props) => {
                 </Container>
             )
         } else {
-            return <MenuDetailSelection index={props.menu1.actualMenu} >
+            return <MenuDetailSelection index={props.menu1.actualMenu} getExpiringIngredients={getExpiringIngredients} >
                 <Helmet>
                     <title>Menu</title>
                 </Helmet>

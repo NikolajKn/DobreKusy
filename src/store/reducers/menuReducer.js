@@ -16,7 +16,8 @@ const initState = {
         friday: []
     },
     filterIngredients:[],
-    expiringIngredients:{}
+    expiringIngredients:{},
+    otherIngredients:{}
 }
 
 const menuReducer=(state=initState, action) => {
