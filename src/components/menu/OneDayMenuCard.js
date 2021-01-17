@@ -55,8 +55,8 @@ class OneDayMenuCard extends Component {
             <Container className="recipeInMenu" as={"article"}>
                 <Row>
                     {
-                        //<MenuModal day={this.props.day} update={this.props.update} recalculateExpiringIngredients={this.recalculateExpiringIngredients.bind(this)} />
-                        <MatejMenuModal day={this.props.day} update={this.props.update} recalculateExpiringIngredients={this.recalculateExpiringIngredients.bind(this)} />
+                        <MenuModal day={this.props.day} update={this.props.update} recalculateExpiringIngredients={this.recalculateExpiringIngredients.bind(this)} />
+                        //<MatejMenuModal day={this.props.day} update={this.props.update} recalculateExpiringIngredients={this.recalculateExpiringIngredients.bind(this)} />
                         //<NikoMenuModal day={this.props.day} update={this.props.update}/>
                     }
 

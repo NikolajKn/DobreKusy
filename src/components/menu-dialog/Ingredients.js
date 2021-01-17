@@ -26,7 +26,7 @@ class Ingredients extends Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
+ /* componentDidUpdate(prevProps) {
     if (this.props !== prevProps) {
       var ingredients1 = []
       this.props.storage && Object.keys(this.props.storage).map((ing, index) => {
@@ -44,7 +44,8 @@ class Ingredients extends Component {
         }
       }
       )*/
-
+  /*    console.log("EXPIRIIR")
+      console.log(this.props.menuState)
       this.props.menuState && this.props.menuState.expiringIngredients && Object.keys(this.props.menuState.expiringIngredients).map((ing, index) => {
           if(this.props.menuState.expiringIngredients[ing][0] > 0){
             expiration1.push(ing)
@@ -64,7 +65,45 @@ class Ingredients extends Component {
       this.setState({ ingredients: ingredients1 })
       this.setState({ expiration: expiration1 })
     }
+  }*/
+
+  componentDidMount(){
+    var ingredients1 = []
+    this.props.storage && Object.keys(this.props.storage).map((ing, index) => {
+      ingredients1.push(this.props.storage[ing].name)
+    }
+    )
+
+    var expiration1 = []
+    /*this.props.storage && Object.keys(this.props.storage).map((ing, index) => {
+      var itemDate = new Date(this.props.storage[ing].expirationDate.seconds * 1000)
+      var currentDate = new Date(Date.now())
+      var dateDiff = Math.floor((itemDate - currentDate) / 86400000);
+      if (dateDiff <= 7) {
+        expiration1.push(this.props.storage[ing].name)
+      }
+    }
+    )*/
+    this.props.menuState && this.props.menuState.expiringIngredients && Object.keys(this.props.menuState.expiringIngredients).map((ing, index) => {
+        if(this.props.menuState.expiringIngredients[ing][0] > 0){
+          expiration1.push(ing)
+        }
+    }
+    )
+
+    if (this.state.checked.length == 0) {
+
+      var chec = []
+      for (let i = 0; i < expiration1.length; i++) {
+        chec.push(-1)
+      }
+      this.setState({ checked: chec })
+    }
+
+    this.setState({ ingredients: ingredients1 })
+    this.setState({ expiration: expiration1 })  
   }
+
 
   handleClick = () => {
     var newFilterText = this.state.filterText
@@ -77,7 +116,6 @@ class Ingredients extends Component {
   }
 
   handleClick2 = (e) => {
-
     var index = "t" + e.target.id.replace("b", "");
     var newFilterText = this.state.filterText;
     delete newFilterText[index];
